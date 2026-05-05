@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Multimodal fusion for the virtual cell.
+subtitle: AI4Bio · bioinformatics · machine learning.
 
 profile:
   align: right
@@ -24,8 +24,8 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I'm Chunzhuo Zhang, a researcher working on **multimodal fusion** with a particular focus on the **virtual cell** — building unified representations of cells from heterogeneous single-cell modalities (RNA, ATAC, protein, spatial transcriptomics, imaging, and perturbation data).
+I'm Chunzhuo Zhang, a researcher working at the intersection of **AI4Bio**, **bioinformatics**, and **machine learning** — applying modern ML to biological data and using biology to push on what ML methods can do.
 
-My work sits at the intersection of representation learning and computational biology. On the methods side, I'm interested in how ideas from general-purpose multimodal models (CLIP-style contrastive alignment, masked modeling, perceiver-style cross-attention) transfer to the structural quirks of single-cell data: paired vs. unpaired modalities, batch effects, gene-level grammar, and the long tail of perturbation responses. On the application side, I'm interested in foundation models for cells (scGPT, GLUE, totalVI / MultiVI, UCE, STATE, and what comes next) and what it would take to make a virtual cell genuinely useful for biology.
+On the methods side, I'm interested in representation learning, deep learning architectures, and foundation models, and how general-purpose ML ideas transfer to the structural quirks of biological data. On the application side, I'm interested in bioinformatics problems where careful modelling makes a difference for downstream biological discovery.
 
 This site is a placeholder — proper bio, news, and publications coming soon.

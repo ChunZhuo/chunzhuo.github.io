@@ -9,11 +9,11 @@ last_name: Zhang
 contact_note: >
   Best reached by email.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Researcher working on multimodal fusion, with a focus on the virtual cell — integrating heterogeneous single-cell modalities (RNA, ATAC, protein, spatial, imaging, perturbation) into unified cell representations.
+  Researcher working at the intersection of AI4Bio, bioinformatics, and machine learning.
 footer_text: >
   Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
-keywords: virtual cell, multimodal fusion, single-cell genomics, computational biology, machine learning, foundation models
+keywords: AI4Bio, bioinformatics, machine learning, computational biology, deep learning, foundation models
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: 🧬 # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
