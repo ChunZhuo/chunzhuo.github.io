@@ -24,7 +24,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-  I'm Chunzhuo Zhang. I received my Master's degree in bioinformatics from Wageningen University & Research, after a Bachelor's
+  I'm Chunzhuo Zhang (张淳卓). I received my Master's degree in bioinformatics from Wageningen University & Research, after a Bachelor's
 from Northwest Agriculture & Forestry University (NWAFU). I'm now working on biological foundation models — my journey runs from agriculture, to bioinformatics, to AI4Biology.
 
   Earlier, I worked on protein representation, including protein structure representation with transformers and SE(3) graph
