@@ -6,7 +6,7 @@ subtitle: AI4Bio · bioinformatics · machine learning.
 
 profile:
   align: right
-  image:
+  image: selfie.jpg
   image_circular: false
   more_info:
 
