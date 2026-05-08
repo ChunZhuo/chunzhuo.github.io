@@ -125,9 +125,9 @@
               </button>
             </li>
           {% endif %}
-          <!-- Google Translate -->
-          <li class="nav-item d-flex align-items-center" id="translate-nav-item" title="Translate">
-            <div id="google_translate_element"></div>
+          <!-- Language switcher -->
+          <li class="nav-item d-flex align-items-center" id="lang-switcher-nav-item">
+            {% include lang_switcher.liquid %}
           </li>
           {% if site.enable_darkmode %}
             <!-- Toogle theme mode -->
@@ -152,37 +152,3 @@
     </progress>
   {% endif %}
 </header>
-
-<!-- Google Translate widget styling and loader -->
-<style>
-  #google_translate_element { display: inline-block; padding: 0 0.5rem; }
-  #google_translate_element select.goog-te-combo {
-    border: 1px solid var(--global-divider-color, #ccc);
-    background: transparent;
-    color: var(--global-text-color, inherit);
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  #google_translate_element .goog-logo-link,
-  #google_translate_element .goog-te-gadget > span:last-child,
-  #google_translate_element .goog-te-gadget > img { display: none !important; }
-  #google_translate_element .goog-te-gadget { font-size: 0; color: transparent; }
-  /* Suppress the iframe banner that pushes content down */
-  body { top: 0 !important; }
-  .goog-te-banner-frame.skiptranslate { display: none !important; }
-  /* Suppress hover tooltips and highlights */
-  .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-  .goog-text-highlight { background: transparent !important; box-shadow: none !important; }
-</style>
-<script>
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'en,zh-CN',
-      autoDisplay: false
-    }, 'google_translate_element');
-  }
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
