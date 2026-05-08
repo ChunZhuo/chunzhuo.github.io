@@ -68,6 +68,13 @@ jobs:
   deploy:
     # available images: https://github.com/actions/runner-images#available-images
     runs-on: ubuntu-latest
+    env:
+      # Allow bundler to update Gemfile.lock in-place when Gemfile changes.
+      # ruby/setup-ruby@v1 with bundler-cache:true sets deployment=true (i.e. --frozen),
+      # which blocks new gems (e.g. jekyll-polyglot) from being added without a local
+      # bundle install. Overriding here lets CI resolve the lockfile fresh.
+      BUNDLE_DEPLOYMENT: "false"
+      BUNDLE_FROZEN: "false"
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
