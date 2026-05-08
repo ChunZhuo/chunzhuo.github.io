@@ -1,5 +1,6 @@
+{%- assign t = site.data.strings[site.active_lang] -%}
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ site.active_lang | default: site.lang }}">
   <!-- Head -->
   <head>
     {% if page.redirect %}

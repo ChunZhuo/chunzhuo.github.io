@@ -1,8 +1,8 @@
 ---
 layout: default
-lang: en
+lang: zh
 permalink: /blog/
-title: blog
+title: 博客
 nav: true
 nav_order: 1
 body_class: has-blog-bg
@@ -17,6 +17,8 @@ pagination:
     before: 1 # The number of links before the current page
     after: 3 # The number of links after the current page
 ---
+
+<!-- TODO 翻译: 博客列表页面。下方逻辑保持不变（polyglot 会自动按语言过滤文章）。 -->
 
 <div class="post">
 
@@ -86,7 +88,7 @@ pagination:
                     {% assign year = post.date | date: "%Y" %}
 
                     <p class="post-meta">
-                      {{ read_time }} min read &nbsp; &middot; &nbsp;
+                      {{ read_time }} {{ t.post.reading_time }} &nbsp; &middot; &nbsp;
                       <a href="{{ year | prepend: '/blog/' | relative_url }}">
                         <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
                     </p>
@@ -143,7 +145,7 @@ pagination:
       </h3>
       <p>{{ post.description }}</p>
       <p class="post-meta">
-        {{ read_time }} min read &nbsp; &middot; &nbsp;
+        {{ read_time }} {{ t.post.reading_time }} &nbsp; &middot; &nbsp;
         {{ post.date | date: '%B %d, %Y' }}
         {% if post.external_source %}
         &nbsp; &middot; &nbsp; {{ post.external_source }}

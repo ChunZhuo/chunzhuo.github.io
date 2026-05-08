@@ -1,9 +1,9 @@
 ---
 layout: about
-title: about
-lang: en
+title: 关于
+lang: zh
 permalink: /
-subtitle: AI4Bio · bioinformatics · machine learning.
+subtitle: AI4Bio · 生物信息学 · 机器学习。
 
 profile:
   align: right
@@ -25,6 +25,10 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
+<!-- TODO 翻译: 将下方内容翻译为中文 -->
+
+  我是张淳卓 (Chunzhuo Zhang)。**(此页面待翻译。)**
+
   I'm Chunzhuo Zhang (张淳卓). I received my Master's degree in bioinformatics from Wageningen University & Research, after a Bachelor's
 from Northwest Agriculture & Forestry University (NWAFU). I'm now working on biological foundation models — my journey runs from agriculture, to bioinformatics, to AI4Biology.
 
@@ -32,5 +36,3 @@ from Northwest Agriculture & Forestry University (NWAFU). I'm now working on bio
 neural networks. I'm currently working on single-cell foundation models.
 
   In my free time, I work out at the gym, play basketball, and swim.
-
-

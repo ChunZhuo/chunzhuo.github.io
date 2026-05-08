@@ -1,0 +1,23 @@
+# English UI strings used across layouts and includes.
+# Looked up via {% assign t = site.data.strings[site.active_lang] %} then {{ t.<key> }}.
+
+nav:
+  toggle: "Toggle navigation"
+  search_hint: "ctrl k"
+  search_title: "Search"
+  translate_title: "Translate"
+  theme_title: "Change theme"
+
+footer:
+  last_updated: "Last updated"
+
+search:
+  placeholder: "Search..."
+  no_results: "No results found."
+
+post:
+  next: "Next post"
+  previous: "Previous post"
+  read_more: "Read more"
+  reading_time: "min read"
+  tags: "Tags"

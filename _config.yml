@@ -207,6 +207,15 @@ keep_files:
   - CNAME
   - .nojekyll
 
+# -----------------------------------------------------------------------------
+# Polyglot (multilingual) settings
+# -----------------------------------------------------------------------------
+
+languages: ["en", "zh"]
+default_lang: "en"
+exclude_from_localization: ["assets", "robots.txt", "sitemap.xml", "_bibliography"]
+parallel_localization: true
+
 # Plug-ins
 plugins:
   - jekyll-3rd-party-libraries
@@ -220,6 +229,7 @@ plugins:
   - jekyll-link-attributes
   - jekyll-minifier
   - jekyll-paginate-v2
+  - jekyll-polyglot
   - jekyll-regex-replace
   - jekyll/scholar
   - jekyll-sitemap

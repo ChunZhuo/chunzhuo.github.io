@@ -1,0 +1,28 @@
+{%- comment -%}
+  Language switcher: emits "EN | 中文" with the active language bolded.
+  For each non-active language, links to the equivalent URL.
+  Strips the "/zh" prefix from the current URL to compute the English path,
+  then re-prefixes for the target language (or leaves it bare for default_lang).
+{%- endcomment -%}
+
+{%- assign current_path = page.url | remove_first: '/zh' -%}
+{%- if current_path == '' -%}{%- assign current_path = '/' -%}{%- endif -%}
+
+<span class="lang-switcher" style="margin-left: 0.5rem; white-space: nowrap;">
+  {%- for lang in site.languages -%}
+    {%- if lang == site.active_lang -%}
+      <strong style="color: var(--global-theme-color, inherit);">
+        {%- if lang == 'zh' -%}中文{%- else -%}{{ lang | upcase }}{%- endif -%}
+      </strong>
+    {%- else -%}
+      {%- if lang == site.default_lang -%}
+        <a href="{{ current_path | relative_url }}">EN</a>
+      {%- else -%}
+        <a href="{{ '/' | append: lang | append: current_path | relative_url }}">
+          {%- if lang == 'zh' -%}中文{%- else -%}{{ lang | upcase }}{%- endif -%}
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+    {%- unless forloop.last -%} <span style="opacity: 0.5;">|</span> {%- endunless -%}
+  {%- endfor -%}
+</span>

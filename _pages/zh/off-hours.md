@@ -1,16 +1,16 @@
 ---
 layout: page
-title: off-hours
-lang: en
+title: 生活
+lang: zh
 permalink: /off-hours/
-description: Life outside the desk.
+description: 实验室之外的生活。
 nav: true
 nav_order: 3
 display_categories: [hobbies, travel]
 horizontal: false
 ---
 
-<!-- pages/off-hours.md -->
+<!-- TODO 翻译: 翻译下方介绍段落。卡片内容来自 _projects/ 数据，需要单独翻译。 -->
 
 <div class="row align-items-center mb-4">
   <div class="col-md-7">

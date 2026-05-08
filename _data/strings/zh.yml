@@ -1,0 +1,23 @@
+# Chinese UI strings. English values are placeholder fallbacks.
+# Replace each value with its Chinese translation when ready.
+
+nav:
+  toggle: "Toggle navigation"        # TODO 翻译: e.g. "切换导航"
+  search_hint: "ctrl k"              # TODO 翻译: keep as "ctrl k" or translate hint
+  search_title: "Search"             # TODO 翻译: e.g. "搜索"
+  translate_title: "Translate"       # TODO 翻译: e.g. "翻译"
+  theme_title: "Change theme"        # TODO 翻译: e.g. "切换主题"
+
+footer:
+  last_updated: "Last updated"       # TODO 翻译: e.g. "最近更新"
+
+search:
+  placeholder: "Search..."           # TODO 翻译: e.g. "搜索..."
+  no_results: "No results found."    # TODO 翻译: e.g. "未找到结果。"
+
+post:
+  next: "Next post"                  # TODO 翻译: e.g. "下一篇"
+  previous: "Previous post"          # TODO 翻译: e.g. "上一篇"
+  read_more: "Read more"             # TODO 翻译: e.g. "阅读全文"
+  reading_time: "min read"           # TODO 翻译: e.g. "分钟阅读"
+  tags: "Tags"                       # TODO 翻译: e.g. "标签"

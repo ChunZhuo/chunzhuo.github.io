@@ -1,5 +1,6 @@
 ---
 layout: cv
+lang: en
 permalink: /cv/
 title: CV
 nav: true

@@ -1,12 +1,14 @@
 ---
 layout: page
-lang: en
+lang: zh
 permalink: /repositories/
-title: repositories
-description: Selected repositories from my research work.
+title: 仓库
+description: 我的研究工作中的代表性代码仓库。
 nav: true
 nav_order: 4
 ---
+
+<!-- TODO 翻译: 翻译下方标题（GitHub users / GitHub Repositories）。仓库列表来自 _data/repositories.yml。 -->
 
 {% if site.data.repositories.github_users %}
 

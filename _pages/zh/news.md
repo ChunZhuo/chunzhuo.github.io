@@ -1,7 +1,7 @@
 ---
 layout: page
-title: news
-lang: en
+title: 新闻
+lang: zh
 permalink: /news/
 ---
 
