@@ -1,4 +1,5 @@
 ---
+lang: en
 layout: post
 title: Multimodality for Biology
 date: 2026-05-07
