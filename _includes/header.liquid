@@ -34,7 +34,7 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">{{ t.nav.toggle }}</span>
         <span class="icon-bar top-bar"></span>
         <span class="icon-bar middle-bar"></span>
         <span class="icon-bar bottom-bar"></span>
@@ -120,8 +120,8 @@
           {% if site.search_enabled %}
             <!-- Search -->
             <li class="nav-item">
-              <button id="search-toggle" title="Search" onclick="openSearchModal()">
-                <span class="nav-link">ctrl k <i class="fa-solid fa-magnifying-glass"></i></span>
+              <button id="search-toggle" title="{{ t.nav.search_title }}" onclick="openSearchModal()">
+                <span class="nav-link">{{ t.nav.search_hint }} <i class="fa-solid fa-magnifying-glass"></i></span>
               </button>
             </li>
           {% endif %}
@@ -132,7 +132,7 @@
           {% if site.enable_darkmode %}
             <!-- Toogle theme mode -->
             <li class="toggle-container">
-              <button id="light-toggle" title="Change theme">
+              <button id="light-toggle" title="{{ t.nav.theme_title }}">
                 <i class="fa-half-sun-moon" id="light-toggle-system"></i>
                 <i class="fa-solid fa-moon" id="light-toggle-dark"></i>
                 <i class="fa-solid fa-sun" id="light-toggle-light"></i>
