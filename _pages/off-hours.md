@@ -1,6 +1,7 @@
 ---
 layout: page
 title: off-hours
+lang: en
 permalink: /off-hours/
 description: Life outside the desk.
 nav: true

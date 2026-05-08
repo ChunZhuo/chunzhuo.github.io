@@ -1,5 +1,6 @@
 ---
 layout: page
+lang: en
 permalink: /reports/
 title: reports
 description: technical reports and project write-ups, in reverse chronological order.

@@ -1,6 +1,7 @@
 ---
 layout: about
 title: about
+lang: en
 permalink: /
 subtitle: AI4Bio · bioinformatics · machine learning.
 
