@@ -10,6 +10,13 @@ horizontal: false
 ---
 
 <!-- pages/off-hours.md -->
+
+<div class="row justify-content-center mb-4">
+  <div class="col-md-8 col-lg-6">
+    {% include figure.liquid loading="eager" path="assets/img/off-hours-hero.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+  </div>
+</div>
+
 <div class="projects">
 {% if site.enable_project_categories and page.display_categories %}
   <!-- Display categorized projects -->
