@@ -11,8 +11,11 @@ horizontal: false
 
 <!-- pages/off-hours.md -->
 
-<div class="row justify-content-center mb-4">
-  <div class="col-md-8 col-lg-6">
+<div class="row align-items-center mb-4">
+  <div class="col-md-7">
+    <p>Outside the lab, I play basketball, swim, lift, and pick up the occasional figurine on the way. This page collects short clips and notes from those off-hours.</p>
+  </div>
+  <div class="col-md-5">
     {% include figure.liquid loading="eager" path="assets/img/off-hours-hero.png" class="img-fluid rounded z-depth-1" zoomable=true %}
   </div>
 </div>
