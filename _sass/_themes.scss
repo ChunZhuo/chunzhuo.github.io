@@ -230,3 +230,36 @@ html[data-theme="dark"] body {
     background-attachment: scroll;
   }
 }
+
+/******************************************************************************
+ * Blog page background (Latent Space)
+ *
+ * Scoped to the /blog/ page (and its paginated children) via the body class
+ * `has-blog-bg`, set from blog.md's `body_class:` frontmatter and applied in
+ * default.liquid. Image is dimmed via a translucent overlay so the page's
+ * <h1>Latent Space</h1>, post titles, and metadata remain readable.
+ ******************************************************************************/
+body.has-blog-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.78)),
+    url("/assets/img/latent_space.png");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* In dark mode the latent_space image replaces the Hubble background. The
+ * extra class selector raises specificity above `html[data-theme="dark"] body`
+ * so this rule wins on /blog/. */
+html[data-theme="dark"] body.has-blog-bg {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.72)),
+    url("/assets/img/latent_space.png");
+}
+
+@media (max-width: 768px) {
+  body.has-blog-bg {
+    background-attachment: scroll;
+  }
+}
