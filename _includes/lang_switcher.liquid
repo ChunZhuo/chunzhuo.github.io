@@ -1,8 +1,8 @@
 {%- comment -%}
   Language switcher: emits "EN | 中文" with the active language bolded.
   For each non-active language, links to the equivalent URL.
-  Avoids relative_url here because jekyll-polyglot can re-apply the active
-  language prefix, which breaks links from /zh/... back to English.
+  Avoids site.baseurl and relative_url here because jekyll-polyglot sets
+  site.baseurl to the active language prefix while rendering localized pages.
 {%- endcomment -%}
 
 {%- assign current_path = page.url | remove_first: '/zh' -%}
@@ -16,9 +16,9 @@
       </strong>
     {%- else -%}
       {%- if lang == site.default_lang -%}
-        <a href="{{ site.baseurl }}{{ current_path }}">EN</a>
+        <a href="{{ current_path }}">EN</a>
       {%- else -%}
-        <a href="{{ site.baseurl }}/{{ lang }}{{ current_path }}">
+        <a href="/{{ lang }}{{ current_path }}">
           {%- if lang == 'zh' -%}中文{%- else -%}{{ lang | upcase }}{%- endif -%}
         </a>
       {%- endif -%}
