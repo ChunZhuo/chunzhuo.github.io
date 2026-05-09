@@ -104,8 +104,12 @@ jobs:
           bundle exec jekyll build 2>&1 | tee jekyll-build.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then
-            tail -n 80 jekyll-build.log
-            message=$(tail -n 40 jekyll-build.log | tr '\n' ' ' | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
+            {
+              grep -Ei 'error|exception|fatal|failed|killed|liquid|no such|not found|permission|traceback|jekyll' jekyll-build.log | tail -n 30
+              echo "--- tail ---"
+              tail -n 12 jekyll-build.log
+            } | tee jekyll-build-summary.log
+            message=$(cat jekyll-build-summary.log | tr '\n' ' ' | sed 's/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
             echo "::error file=jekyll-build.log,line=1::${message}"
             exit "$status"
           fi
