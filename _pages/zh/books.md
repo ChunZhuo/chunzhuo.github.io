@@ -7,10 +7,8 @@ nav: false
 collection: books
 ---
 
-<!-- TODO 翻译: 翻译下方引文及标题。书籍列表通过 collection 自动生成。 -->
-
-> What an astonishing thing a book is. It's a flat object made from a tree with flexible parts on which are imprinted lots of funny dark squiggles. But one glance at it and you're inside the mind of another person, maybe somebody dead for thousands of years. Across the millennia, an author is speaking clearly and silently inside your head, directly to you. Writing is perhaps the greatest of human inventions, binding together people who never knew each other, citizens of distant epochs. Books break the shackles of time. A book is proof that humans are capable of working magic.
+> 书是一件多么令人惊叹的东西。它是由树木制成的扁平物体，上面有柔软的页面，印着许多深色的符号。只要看上一眼，你就进入了另一个人的思想，也许那个人已经离世数千年。跨越漫长岁月，作者在你的脑海中清晰而安静地说话，直接与你交流。写作也许是人类最伟大的发明之一，它把素未谋面的人、相隔遥远时代的公民连接在一起。书打破了时间的枷锁。书证明了人类有能力创造奇迹。
 >
-> -- Carl Sagan, Cosmos, Part 11: The Persistence of Memory (1980)
+> -- 卡尔·萨根，《宇宙》第 11 集：记忆的延续 (1980)
 
-## Books that I am reading, have read, or will read
+## 正在读、读过或计划阅读的书

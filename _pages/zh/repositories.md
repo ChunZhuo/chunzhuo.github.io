@@ -8,11 +8,9 @@ nav: true
 nav_order: 4
 ---
 
-<!-- TODO 翻译: 翻译下方标题（GitHub users / GitHub Repositories）。仓库列表来自 _data/repositories.yml。 -->
-
 {% if site.data.repositories.github_users %}
 
-## GitHub users
+## GitHub 用户
 
 <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
   {% for user in site.data.repositories.github_users %}
@@ -40,7 +38,7 @@ nav_order: 4
 
 {% if site.data.repositories.github_repos %}
 
-## GitHub Repositories
+## GitHub 仓库
 
 <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
   {% for repo in site.data.repositories.github_repos %}

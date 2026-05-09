@@ -18,8 +18,6 @@ pagination:
     after: 3 # The number of links after the current page
 ---
 
-<!-- TODO 翻译: 博客列表页面。下方逻辑保持不变（polyglot 会自动按语言过滤文章）。 -->
-
 <div class="post">
 
 {% assign blog_name_size = site.blog_name | size %}

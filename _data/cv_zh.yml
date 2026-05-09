@@ -1,0 +1,65 @@
+cv:
+  name: Chunzhuo Zhang (张淳卓)
+  label: AI4Bio 研究者
+  email: zhangchunzhuo@aaib.pku.edu.cn
+  location: ""
+  image: ""
+  summary: 研究方向位于 AI4Bio、生物信息学与机器学习的交叉领域。目前主要关注单细胞基础模型，以及面向虚拟细胞建模的多模态融合。
+
+  sections:
+    Education:
+      - institution: 瓦赫宁根大学与研究中心
+        location: 荷兰瓦赫宁根
+        url: https://www.wur.nl/
+        area: 生物信息学
+        studyType: 硕士
+        start_date: 2022-09
+        end_date: 2024-08
+        score: "GPA: 7.5/10"
+        courses: "计算生物学 (8.5/10)、深度学习 (8/10)、基因组学 (8/10)、高级统计学 (8/10)、机器学习 (7.5/10)、分子系统生物学 (7.5/10)、软件工程 (7.5/10)"
+        highlights:
+          - "**蛋白质结构与序列嵌入 (sgBERT, gBERT)：** 通过注意力机制融合蛋白质结构与序列信息，获得蛋白质表示；初步探索多模态融合。[ChunZhuo/sgBERT](https://github.com/ChunZhuo/sgBERT)"
+          - "**蛋白质-蛋白质界面假阳性预测：** 在 DeepRank-GNN 基础上引入使用调和函数的等变图神经网络，并在丙氨酸扫描任务上与 HADDOCK、传统机器学习和 GNN 基线进行比较。[ChunZhuo/SEGIN](https://github.com/ChunZhuo/SEGIN)"
+          - "课程与实践：序列组装、差异基因表达、蛋白结构域分析、基因调控网络分析；使用 Java 开发停车场出入管理系统。"
+
+      - institution: 西北农林科技大学
+        location: 中国杨凌
+        area: 园艺
+        studyType: 本科
+        start_date: 2018-09
+        end_date: 2022-07
+        score: "GPA: 3.51"
+        courses: "高等数学 (91/100)、线性代数 (94/100)、概率论 (92/100)、基础生物化学 (91/100)、有机化学 (94/100)"
+        highlights:
+          - "猕猴桃茎尖超低温疗法脱毒研究，包括 RT-PCR 与植物组织培养。"
+
+    Experience:
+      - company: 研究机构
+        position: 生物基础模型设计
+        start_date: 2024-10
+        summary: 设计单细胞基础模型，并探索用于虚拟细胞建模的多模态融合方法。
+        highlights:
+          - "**单细胞基础模型 (53M / 300M / 600M / 2B)：** 使用观测数据与扰动数据进行 in-context learning，建模细胞群体层面的状态。从数据预处理、架构设计到下游评测搭建完整流程；基于 scGPT 进行改进，并在评测中优于 scGPT、Transcriptformer 和 UCE。"
+          - "探索单细胞数据上的 scaling law。"
+          - "实现从 PyTorch 到 PyTorch Lightning 的训练框架迁移；使用 FlashAttention / FlexAttention 加速注意力计算；设计自定义损失函数与多分类头。"
+          - "构建多任务下游评测流程，包括批次效应校正、细胞分类、扰动预测，并为单细胞基础模型设计新的评测任务。"
+          - "分布式训练：FSDP、数据并行、激活检查点。"
+          - "指导实习生完成独立项目。"
+          - "**BindCraft 蛋白设计：** 与实验团队合作，在约束结合位点下设计抗原配体并生成 binder；约 5% 的设计表现出较强结合亲和力。"
+
+    Skills:
+      - name: 编程
+        icon: fa-solid fa-code
+        keywords: "Python (PyTorch, PyTorch Lightning)、R、Java、C++"
+      - name: 机器学习系统
+        icon: fa-solid fa-microchip
+        keywords: "FlashAttention、FlexAttention、FSDP、数据并行、激活检查点"
+      - name: 研究领域
+        icon: fa-solid fa-dna
+        keywords: "单细胞基础模型、蛋白质表示学习、等变图神经网络、多模态融合"
+
+    Languages:
+      - name: 英语
+        summary: "流利；IELTS 7.0 (口语 7.0)；GRE 320"
+      - name: 普通话
+        summary: "母语"

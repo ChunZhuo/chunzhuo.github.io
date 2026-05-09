@@ -1,23 +1,42 @@
-# Chinese UI strings. English values are placeholder fallbacks.
-# Replace each value with its Chinese translation when ready.
-
 nav:
-  toggle: "Toggle navigation"        # TODO 翻译: e.g. "切换导航"
-  search_hint: "ctrl k"              # TODO 翻译: keep as "ctrl k" or translate hint
-  search_title: "Search"             # TODO 翻译: e.g. "搜索"
-  translate_title: "Translate"       # TODO 翻译: e.g. "翻译"
-  theme_title: "Change theme"        # TODO 翻译: e.g. "切换主题"
+  toggle: "切换导航"
+  search_hint: "ctrl k"
+  search_title: "搜索"
+  translate_title: "翻译"
+  theme_title: "切换主题"
 
 footer:
-  last_updated: "Last updated"       # TODO 翻译: e.g. "最近更新"
+  last_updated: "最近更新"
+  text: '由 <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> 和 <a href="https://github.com/alshedivat/al-folio">al-folio</a> 主题构建。托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>。'
 
 search:
-  placeholder: "Search..."           # TODO 翻译: e.g. "搜索..."
-  no_results: "No results found."    # TODO 翻译: e.g. "未找到结果。"
+  placeholder: "搜索..."
+  no_results: "未找到结果。"
 
 post:
-  next: "Next post"                  # TODO 翻译: e.g. "下一篇"
-  previous: "Previous post"          # TODO 翻译: e.g. "上一篇"
-  read_more: "Read more"             # TODO 翻译: e.g. "阅读全文"
-  reading_time: "min read"           # TODO 翻译: e.g. "分钟阅读"
-  tags: "Tags"                       # TODO 翻译: e.g. "标签"
+  next: "下一篇"
+  previous: "上一篇"
+  read_more: "阅读全文"
+  reading_time: "分钟阅读"
+  tags: "标签"
+
+cv:
+  download_pdf: "下载 PDF"
+  contact_information: "联系方式"
+  name: "姓名"
+  professional_title: "职业方向"
+  email: "邮箱"
+  phone: "电话"
+  location: "地点"
+  website: "网站"
+  professional_summary: "个人简介"
+  experience: "经历"
+  education: "教育经历"
+  skills: "技能"
+  languages: "语言"
+  awards: "奖项"
+  publications: "论文"
+  interests: "兴趣"
+  certificates: "证书"
+  projects: "项目"
+  references: "推荐人"

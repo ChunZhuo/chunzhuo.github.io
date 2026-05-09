@@ -10,6 +10,7 @@ nav:
 
 footer:
   last_updated: "Last updated"
+  text: 'Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.'
 
 search:
   placeholder: "Search..."
@@ -21,3 +22,24 @@ post:
   read_more: "Read more"
   reading_time: "min read"
   tags: "Tags"
+
+cv:
+  download_pdf: "Download PDF"
+  contact_information: "Contact Information"
+  name: "Name"
+  professional_title: "Professional Title"
+  email: "Email"
+  phone: "Phone"
+  location: "Location"
+  website: "Website"
+  professional_summary: "Professional Summary"
+  experience: "Experience"
+  education: "Education"
+  skills: "Skills"
+  languages: "Languages"
+  awards: "Awards"
+  publications: "Publications"
+  interests: "Interests"
+  certificates: "Certificates"
+  projects: "Projects"
+  references: "References"
