@@ -6,6 +6,7 @@ date: 2026-05-09
 description: "Daily AI research and news digest covering model releases, AI agents, frontier-model evaluation, and AI infrastructure."
 tags: ["AI", "papers", "AI-news", "daily-sprouts"]
 categories: daily-sprouts
+thumbnail: assets/img/posts/ai-daily-sprouts-2026-05-09/cover.png
 featured: false
 ---
 

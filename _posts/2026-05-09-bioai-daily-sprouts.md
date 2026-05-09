@@ -6,6 +6,7 @@ date: 2026-05-09
 description: "Daily AI4Bio, bioinformatics, and computational biology paper digest."
 tags: ["bioAI", "AI4Bio", "bioinformatics", "papers", "daily-sprouts"]
 categories: daily-sprouts
+thumbnail: assets/img/posts/bioai-daily-sprouts-2026-05-09/cover.png
 featured: false
 ---
 
