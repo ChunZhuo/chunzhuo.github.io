@@ -18,6 +18,7 @@ search:
   no_results: "No results found."
 
 post:
+  by: "by"
   next: "Next post"
   previous: "Previous post"
   read_more: "Read more"

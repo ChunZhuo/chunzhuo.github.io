@@ -3,6 +3,7 @@ lang: zh
 layout: post
 title: 生物学中的多模态融合
 date: 2026-05-07
+author: Chunzhuo Zhang; Claude Code (rephrasing)
 description: 三种生物模态融合方法：自底向上、并行、统一，以及我对该领域走向的思考。
 tags: ["machine learning", "biology", "multimodality", "single-cell", "foundation-models"]
 categories: research-notes
