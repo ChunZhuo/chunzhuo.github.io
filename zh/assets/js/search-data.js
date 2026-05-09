@@ -44,11 +44,33 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-生物学中的多模态融合",
+        },{id: "post-bioai-daily-sprouts-2026-05-09",
+        
+          title: "bioAI Daily Sprouts | 2026-05-09",
+        
+        description: "Daily AI4Bio, bioinformatics, and computational biology paper digest.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bioai-daily-sprouts/";
+          
+        },
+      },{id: "post-ai-daily-sprouts-2026-05-09",
+        
+          title: "AI Daily Sprouts | 2026-05-09",
+        
+        description: "Daily AI research and news digest covering model releases, AI agents, frontier-model evaluation, and AI infrastructure.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ai-daily-sprouts/";
+          
+        },
+      },{id: "post-生物学中的多模态融合",
         
           title: "生物学中的多模态融合",
         
-        description: "三种生物模态融合方法——自底向上、并行、统一——以及我对该领域走向的思考。",
+        description: "三种生物模态融合方法：自底向上、并行、统一，以及我对该领域走向的思考。",
         section: "Posts",
         handler: () => {
           
