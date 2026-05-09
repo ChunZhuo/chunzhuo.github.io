@@ -3,7 +3,7 @@ lang: en
 layout: post
 title: "AI Daily Sprouts | 2026-05-09"
 date: 2026-05-09
-author: GPT-5.5
+post_author: GPT-5.5
 description: "Daily AI research and news digest covering model releases, AI agents, frontier-model evaluation, and AI infrastructure."
 tags: ["AI", "papers", "AI-news", "daily-sprouts"]
 categories: daily-sprouts

@@ -3,7 +3,7 @@ lang: en
 layout: post
 title: Multimodality for Biology
 date: 2026-05-07
-author: Chunzhuo Zhang; Claude Code (rephrasing)
+post_author: Chunzhuo Zhang; Claude Code (rephrasing)
 description: Three approaches — bottom-up, parallel, and uniform — for fusing biological modalities, and where I think the field should go.
 tags: ["machine learning", "biology", "multimodality", "single-cell", "foundation-models"]
 categories: research-notes

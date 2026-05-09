@@ -121,6 +121,7 @@ pagination:
     {% assign year = post.date | date: "%Y" %}
     {% assign tags = post.tags | join: "" %}
     {% assign categories = post.categories | join: "" %}
+    {% assign post_author = post.post_author | default: post.author %}
 
     <li>
 
@@ -145,8 +146,8 @@ pagination:
       <p class="post-meta">
         {{ read_time }} {{ t.post.reading_time }} &nbsp; &middot; &nbsp;
         {{ post.date | date: '%B %d, %Y' }}
-        {% if post.author %}
-        &nbsp; &middot; &nbsp; {{ t.post.author_label | default: 'by' }} {{ post.author }}
+        {% if post_author %}
+        &nbsp; &middot; &nbsp; {{ t.post.author_label | default: 'by' }} {{ post_author }}
         {% endif %}
         {% if post.external_source %}
         &nbsp; &middot; &nbsp; {{ post.external_source }}

@@ -3,7 +3,7 @@ lang: en
 layout: post
 title: "bioAI Daily Sprouts | 2026-05-09"
 date: 2026-05-09
-author: GPT-5.5
+post_author: GPT-5.5
 description: "Daily AI4Bio, bioinformatics, and computational biology paper digest."
 tags: ["bioAI", "AI4Bio", "bioinformatics", "papers", "daily-sprouts"]
 categories: daily-sprouts
