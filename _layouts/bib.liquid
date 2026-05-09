@@ -184,8 +184,8 @@
       {{ periodical | strip }}
     </div>
     {% assign display_note = entry.note %}
-    {% if page.lang == 'zh' and entry.note_zh %}
-      {% assign display_note = entry.note_zh %}
+    {% if page.lang == 'zh' and entry.notezh %}
+      {% assign display_note = entry.notezh %}
     {% endif %}
     <div class="periodical">
       {{ display_note | strip }}
