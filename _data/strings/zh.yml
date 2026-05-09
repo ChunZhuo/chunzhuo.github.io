@@ -15,7 +15,7 @@ search:
   no_results: "未找到结果。"
 
 post:
-  by: "作者："
+  author_label: "作者："
   next: "下一篇"
   previous: "上一篇"
   read_more: "阅读全文"

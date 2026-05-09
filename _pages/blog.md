@@ -146,7 +146,7 @@ pagination:
         {{ read_time }} min read &nbsp; &middot; &nbsp;
         {{ post.date | date: '%B %d, %Y' }}
         {% if post.author %}
-        &nbsp; &middot; &nbsp; {{ t.post.by | default: 'by' }} {{ post.author }}
+        &nbsp; &middot; &nbsp; {{ t.post.author_label | default: 'by' }} {{ post.author }}
         {% endif %}
         {% if post.external_source %}
         &nbsp; &middot; &nbsp; {{ post.external_source }}

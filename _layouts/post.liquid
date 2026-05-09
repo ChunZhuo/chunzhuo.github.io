@@ -18,7 +18,7 @@ layout: default
     <h1 class="post-title">{{ page.title }}</h1>
     <p class="post-meta">
       Created on {{ page.date | date: '%B %d, %Y' }}
-      {% if page.author %} {{ t.post.by | default: 'by' }} {{ page.author }}{% endif %}
+      {% if page.author %} {{ t.post.author_label | default: 'by' }} {{ page.author }}{% endif %}
       {% assign last_date = page.last_modified_at | default: page.last_updated %}
       {% if last_date %}, last updated on {{ last_date | date: '%B %d, %Y' }}{% endif %}
       {% if page.meta %}• {{ page.meta }}{% endif %}
