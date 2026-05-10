@@ -129,6 +129,14 @@ layout: default
           </div>
         {% endif %}
 
+        <!-- Summary -->
+        {% if cv.summary %}
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">{{ t.cv.professional_summary | default: 'Professional Summary' }}</h3>
+            <p>{{ cv.summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+          </div>
+        {% endif %}
+
         <!-- RenderCV Sections - Merge Experience and Volunteer -->
         {% comment %} First, combine Experience and Volunteer entries {% endcomment %}
         {% assign empty_array = '' | split: ',' %}
@@ -290,6 +298,14 @@ layout: default
                 </tr>
               {% endif %}
             </table>
+          </div>
+        {% endif %}
+
+        <!-- Summary -->
+        {% if site.data.resume.basics.summary %}
+          <div class="card mt-3 p-3">
+            <h3 class="card-title font-weight-medium">{{ t.cv.professional_summary | default: 'Professional Summary' }}</h3>
+            <p>{{ site.data.resume.basics.summary | markdownify | remove: '<p>' | remove: '</p>' }}</p>
           </div>
         {% endif %}
 
