@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-bioai-daily-sprouts-2026-05-09",
+        },{id: "post-ai-daily-sprouts-2026-05-10",
+        
+          title: "AI Daily Sprouts | 2026-05-10",
+        
+        description: "Daily AI research and news digest covering inference efficiency, agent workflows, byte-level LMs, and preference optimization.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/ai-daily-sprouts-2026-05-10/";
+          
+        },
+      },{id: "post-bioai-daily-sprouts-2026-05-09",
         
           title: "bioAI Daily Sprouts | 2026-05-09",
         
