@@ -7,7 +7,7 @@ post_author: GPT-5.5
 description: "Daily AI research and news digest covering inference efficiency, agent workflows, byte-level LMs, and preference optimization."
 tags: ["AI", "papers", "AI-news", "daily-sprouts"]
 categories: daily-sprouts
-thumbnail: assets/img/posts/ai-daily-sprouts-2026-05-10/cover.png
+thumbnail: assets/img/posts/ai-daily-sprouts-2026-05-10/cover.jpg
 featured: false
 ---
 
