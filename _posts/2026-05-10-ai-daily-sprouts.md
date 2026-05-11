@@ -12,7 +12,7 @@ permalink: /blog/2026/ai-daily-sprouts-2026-05-10/
 featured: false
 ---
 
-Search date: 2026-05-10. Window used: roughly the last 7 days. I skipped items already covered in the 2026-05-09 digest, including OpenAI realtime voice models, GPT-5.5 Instant, AlphaEvolve impact, CAISI model-testing agreements, and Anthropic's recent compute and enterprise-service announcements.
+Search date: 2026-05-10. Window used: roughly the last 7 days.
 
 ## Top items
 
