@@ -214,7 +214,7 @@ keep_files:
 languages: ["en", "zh"]
 default_lang: "en"
 exclude_from_localization: ["assets", "robots.txt", "sitemap.xml", "_bibliography"]
-parallel_localization: true
+parallel_localization: false
 
 # Plug-ins
 plugins:
