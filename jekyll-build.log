@@ -25,6 +25,7 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/mermaid-setup.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/newsletter.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/no_defer.js
+Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/perturbseq-crispri.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/plotly-setup.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/progress-bar.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/pseudocode-setup.js
@@ -261,7 +262,7 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
        Imagemagick: Generated 108 file(s)
          AutoPages: Disabled/Not configured in site.config.
         Pagination: Complete, processed 1 pagination page(s)
-[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260511-3489-8dvvxm.ipynb to html
+[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260511-3285-rzrijl.ipynb to html
 /opt/hostedtoolcache/Python/3.13.13/x64/lib/python3.13/site-packages/nbconvert/filters/highlight.py:71: UserWarning: IPython3 lexer unavailable, falling back on Python 3
   return _pygments_highlight(
 [33m          Conflict: The following destination is shared by multiple files.[0m

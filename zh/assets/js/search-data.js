@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-ai-daily-sprouts-2026-05-10",
+        },{id: "post-single-cell-perturb-seq-crispri",
+        
+          title: "Single-cell Perturb-seq CRISPRi",
+        
+        description: "An interactive visual explanation of how CRISPRi perturbations are linked to single-cell transcriptomes.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/perturb-seq-crispri/";
+          
+        },
+      },{id: "post-ai-daily-sprouts-2026-05-10",
         
           title: "AI Daily Sprouts | 2026-05-10",
         
