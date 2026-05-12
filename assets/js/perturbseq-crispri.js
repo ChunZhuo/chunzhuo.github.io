@@ -346,7 +346,7 @@
     function render() {
       labels.children.forEach((label) => label.quaternion.copy(camera.quaternion));
       membrane.rotation.y += 0.0015;
-      membraneWire.rotation.y -= 0.001;
+      membraneWire.rotation.y += 0.0015;
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
