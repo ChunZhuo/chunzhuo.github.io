@@ -90,6 +90,38 @@ _styles: |
     cursor: grabbing;
   }
 
+  .perturbseq-three-stage {
+    cursor: grab;
+    height: min(72vh, 680px);
+    min-height: 460px;
+    position: relative;
+    touch-action: none;
+    width: 100%;
+  }
+
+  .perturbseq-crispri-viewer.is-dragging .perturbseq-three-stage {
+    cursor: grabbing;
+  }
+
+  .perturbseq-three-canvas {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+
+  .perturbseq-three-hint {
+    bottom: 0.75rem;
+    color: var(--ps-muted);
+    font-size: 0.78rem;
+    left: 0.85rem;
+    pointer-events: none;
+    position: absolute;
+  }
+
+  .perturbseq-svg {
+    display: none;
+  }
+
   .perturbseq-title {
     fill: var(--ps-ink);
     font-size: 22px;
@@ -266,6 +298,11 @@ _styles: |
       min-height: 560px;
     }
 
+    .perturbseq-three-stage {
+      height: 560px;
+      min-height: 560px;
+    }
+
     .perturbseq-toolbar {
       align-items: stretch;
       flex-direction: column;
@@ -275,7 +312,7 @@ _styles: |
 
 CRISPRi is a useful perturbation because it behaves like a dimmer switch: the guide RNA brings a catalytically inactive Cas9 repressor to a regulatory region, and transcription drops without making a DNA double-strand break. Perturb-seq adds a pooled single-cell readout, so each cell carries both a perturbation identity and a transcriptome.
 
-The interactive view below is one continuous cell, not a sequence of separate plots. Scroll over the cell to zoom, drag to pan, or use the focus buttons to inspect the nucleus, organelles, and the sgRNA target-transcript interaction.
+The interactive view below is one continuous 3D cell, not a sequence of separate plots. Drag the cell to rotate it, scroll to zoom, or use the focus buttons to inspect the nucleus, organelles, and the sgRNA target-transcript interaction.
 
 <div class="perturbseq-crispri-viewer" data-zoom="whole">
   <div class="perturbseq-toolbar" aria-label="Perturb-seq CRISPRi controls">
@@ -294,6 +331,10 @@ The interactive view below is one continuous cell, not a sequence of separate pl
   </div>
 
   <div class="perturbseq-canvas-wrap">
+    <div class="perturbseq-three-stage" role="img" aria-label="Rotatable 3D cell view of Perturb-seq CRISPRi with organelles and sgRNA target binding">
+      <canvas class="perturbseq-three-canvas"></canvas>
+      <div class="perturbseq-three-hint">Drag to rotate · Scroll to zoom</div>
+    </div>
     <svg class="perturbseq-svg" viewBox="0 0 1000 700" role="img" aria-label="Zoomable whole-cell view of Perturb-seq CRISPRi with organelles and sgRNA target binding">
       <defs>
         <marker id="perturbseq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
