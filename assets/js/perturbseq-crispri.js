@@ -482,7 +482,7 @@
     }
 
     function updateDetailVisibility() {
-      const showFineTarget = state.focus === "binding" || state.distance < 2.8;
+      const showFineTarget = state.focus === "binding";
       const showCoarseChromatin = !showFineTarget;
       fineTargetLayer.visible = showFineTarget;
       fineLabels.visible = showFineTarget && state.distance > 2.8 && camera.aspect >= 0.75;
