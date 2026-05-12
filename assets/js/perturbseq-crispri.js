@@ -23,23 +23,55 @@
     );
   }
 
-  function addLabel(THREE, scene, text, position) {
+  function addTextSprite(THREE, text, options) {
+    const settings = Object.assign({ width: 512, height: 128, fontSize: 34, scale: [1.9, 0.48, 1] }, options || {});
     const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 128;
+    canvas.width = settings.width;
+    canvas.height = settings.height;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "600 34px system-ui, -apple-system, Segoe UI, sans-serif";
+    ctx.font = `600 ${settings.fontSize}px system-ui, -apple-system, Segoe UI, sans-serif`;
     ctx.fillStyle = colorVar("--global-text-color", "#232323");
-    ctx.fillText(text, 22, 76);
+    ctx.fillText(text, 22, settings.height * 0.62);
 
     const texture = new THREE.CanvasTexture(canvas);
     const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
     const sprite = new THREE.Sprite(material);
-    sprite.position.copy(position);
-    sprite.scale.set(1.9, 0.48, 1);
-    scene.add(sprite);
+    sprite.scale.set(settings.scale[0], settings.scale[1], settings.scale[2]);
     return sprite;
+  }
+
+  function addLabel(THREE, scene, text, position, target) {
+    const sprite = addTextSprite(THREE, text);
+    sprite.position.copy(position);
+    scene.add(sprite);
+
+    if (target) {
+      const line = addTube(
+        THREE,
+        scene,
+        [
+          [position.x - 0.24, position.y - 0.08, position.z],
+          [target.x, target.y, target.z],
+        ],
+        "#596579",
+        0.01
+      );
+      line.material.transparent = true;
+      line.material.opacity = 0.62;
+    }
+
+    return sprite;
+  }
+
+  function addCylinderBetween(THREE, group, start, end, radius, color) {
+    const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+    const direction = new THREE.Vector3().subVectors(end, start);
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, direction.length(), 10), makeMaterial(THREE, color));
+    mesh.position.copy(midpoint);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.normalize());
+    group.add(mesh);
+    return mesh;
   }
 
   function addTube(THREE, group, points, color, radius) {
@@ -48,6 +80,76 @@
     const mesh = new THREE.Mesh(geometry, makeMaterial(THREE, color));
     group.add(mesh);
     return mesh;
+  }
+
+  function addNucleotideLabel(THREE, group, base, position) {
+    const sprite = addTextSprite(THREE, base, { width: 96, height: 96, fontSize: 46, scale: [0.18, 0.18, 1] });
+    sprite.position.copy(position);
+    group.add(sprite);
+    return sprite;
+  }
+
+  function addDnaSequence(THREE, group, colors) {
+    const dna = new THREE.Group();
+    const bases = [
+      ["A", "T"],
+      ["C", "G"],
+      ["G", "C"],
+      ["T", "A"],
+      ["A", "T"],
+      ["G", "C"],
+      ["C", "G"],
+      ["T", "A"],
+      ["G", "C"],
+      ["A", "T"],
+      ["C", "G"],
+      ["G", "C"],
+      ["T", "A"],
+      ["A", "T"],
+      ["C", "G"],
+      ["G", "C"],
+    ];
+    const baseColors = { A: "#4c8bd6", T: "#d6a33f", C: "#4da878", G: "#bd6a9a" };
+    const strandA = [];
+    const strandB = [];
+    const sugarMaterial = makeMaterial(THREE, "#d8e8ff", { transparent: true, opacity: 0.88 });
+
+    bases.forEach((pair, index) => {
+      const t = index / (bases.length - 1);
+      const x = -1.46 + t * 2.15;
+      const phase = index * 0.82;
+      const y = 0.08 + Math.sin(phase) * 0.18;
+      const z = 0.14 + Math.cos(phase) * 0.18;
+      const opposite = new THREE.Vector3(x, 0.08 - Math.sin(phase) * 0.18, 0.14 - Math.cos(phase) * 0.18);
+      const first = new THREE.Vector3(x, y, z);
+      strandA.push([first.x, first.y, first.z]);
+      strandB.push([opposite.x, opposite.y, opposite.z]);
+
+      addCylinderBetween(THREE, dna, first, opposite, 0.012, "#b8c2d3");
+
+      [first, opposite].forEach((point, side) => {
+        const base = pair[side];
+        const sugar = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 8), sugarMaterial);
+        sugar.position.copy(point);
+        dna.add(sugar);
+
+        const basePoint = point.clone().lerp(side === 0 ? opposite : first, 0.38);
+        const baseMesh = new THREE.Mesh(new THREE.SphereGeometry(0.046, 16, 10), makeMaterial(THREE, baseColors[base]));
+        baseMesh.position.copy(basePoint);
+        dna.add(baseMesh);
+
+        if (index % 2 === 0) {
+          addNucleotideLabel(THREE, dna, base, basePoint.clone().add(new THREE.Vector3(0, side === 0 ? 0.08 : -0.08, 0.03)));
+        }
+      });
+    });
+
+    addTube(THREE, dna, strandA, colors.blue, 0.018);
+    addTube(THREE, dna, strandB, colors.blue, 0.018);
+    dna.position.set(0.02, 0.1, 0.36);
+    dna.rotation.set(-0.08, 0.05, 0.16);
+    group.add(dna);
+    return dna;
   }
 
   function initViewer(THREE, root) {
@@ -124,39 +226,14 @@
     nucleolus.position.set(-0.92, -0.28, 0.34);
     cell.add(nucleolus);
 
-    addTube(
-      THREE,
-      cell,
-      [
-        [-1.62, 0.06, 0.14],
-        [-1.18, 0.44, -0.1],
-        [-0.68, -0.05, 0.2],
-        [-0.12, 0.32, -0.14],
-        [0.48, -0.02, 0.16],
-      ],
-      colors.blue,
-      0.035
-    );
-    addTube(
-      THREE,
-      cell,
-      [
-        [-1.46, -0.28, -0.12],
-        [-0.94, -0.54, 0.12],
-        [-0.32, -0.16, -0.14],
-        [0.26, -0.46, 0.1],
-        [0.74, -0.16, -0.1],
-      ],
-      colors.blue,
-      0.032
-    );
+    const dnaSequence = addDnaSequence(THREE, cell, colors);
 
     const cas9 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 18), makeMaterial(THREE, colors.blue));
-    cas9.position.set(-0.22, 0.22, 0.42);
+    cas9.position.set(-0.2, 0.38, 0.54);
     cell.add(cas9);
 
     const krab = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.2, 0.18), makeMaterial(THREE, colors.purple));
-    krab.position.set(0.02, 0.38, 0.48);
+    krab.position.set(0.04, 0.54, 0.58);
     krab.rotation.set(0.2, 0.4, 0.15);
     cell.add(krab);
 
@@ -165,16 +242,16 @@
       cell,
       [
         [-0.48, 0.04, 0.48],
-        [-0.36, -0.12, 0.64],
-        [-0.12, -0.04, 0.56],
-        [0.02, 0.14, 0.48],
+        [-0.34, 0.02, 0.7],
+        [-0.1, 0.16, 0.67],
+        [0.03, 0.36, 0.56],
       ],
       colors.green,
       0.025
     );
 
     const rnap = new THREE.Mesh(new THREE.CapsuleGeometry(0.14, 0.42, 8, 24), makeMaterial(THREE, colors.gold));
-    rnap.position.set(0.58, -0.02, 0.35);
+    rnap.position.set(0.82, 0.18, 0.43);
     rnap.rotation.z = Math.PI / 2;
     cell.add(rnap);
 
@@ -182,9 +259,9 @@
       THREE,
       cell,
       [
-        [0.75, -0.05, 0.32],
-        [1.12, -0.08, 0.45],
-        [1.44, -0.22, 0.28],
+        [0.98, 0.15, 0.4],
+        [1.28, 0.12, 0.53],
+        [1.54, -0.02, 0.36],
       ],
       colors.red,
       0.024
@@ -263,28 +340,29 @@
       0.026
     );
 
-    addLabel(THREE, labels, "membrane", new THREE.Vector3(-2.9, 1.75, 0));
-    addLabel(THREE, labels, "nucleus", new THREE.Vector3(-1.45, 1.25, 0.25));
-    addLabel(THREE, labels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.12, 0.86, 0.8));
-    addLabel(THREE, labels, "guide + mRNA readout", new THREE.Vector3(1.16, -1.78, 0.38));
+    addLabel(THREE, labels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
+    addLabel(THREE, labels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
+    addLabel(THREE, labels, "DNA sequence", new THREE.Vector3(-1.05, 1.02, 1.05), dnaSequence.position);
+    addLabel(THREE, labels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.26, 1.1, 1.02), cas9.position);
+    addLabel(THREE, labels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
 
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. The translucent membrane keeps the nucleus, organelles, guide molecules, and transcript readout in the same spatial model.",
+        text: "Drag to rotate one perturbed cell. The membrane stays still unless you move the view; callout lines point to the nucleus, DNA sequence, CRISPRi complex, and readout molecules.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
       },
       nucleus: {
-        label: "Nucleus and chromatin",
-        text: "The camera moves into the nucleus so the chromatin path and target locus remain part of the same rotatable cell.",
-        target: new THREE.Vector3(-0.45, 0.08, 0.18),
-        distance: 4.1,
+        label: "Nucleus and DNA sequence",
+        text: "The nucleus contains a nucleotide-level DNA segment: paired A/T and C/G bases sit between two sugar-phosphate backbones.",
+        target: new THREE.Vector3(-0.16, 0.22, 0.52),
+        distance: 3.4,
       },
       binding: {
         label: "sgRNA target binding",
-        text: "The sgRNA-dCas9-KRAB complex sits near the target DNA and RNA polymerase, illustrating CRISPRi repression without turning the view into a flat diagram.",
-        target: new THREE.Vector3(-0.04, 0.22, 0.44),
+        text: "The sgRNA-dCas9-KRAB complex is positioned on the DNA sequence near RNA polymerase, showing where repression acts at the target locus.",
+        target: new THREE.Vector3(0.12, 0.42, 0.58),
         distance: 2.4,
       },
       readout: {
@@ -344,9 +422,12 @@
     }
 
     function render() {
-      labels.children.forEach((label) => label.quaternion.copy(camera.quaternion));
-      membrane.rotation.y += 0.0015;
-      membraneWire.rotation.y += 0.0015;
+      labels.children.forEach((label) => {
+        if (label.isSprite) label.quaternion.copy(camera.quaternion);
+      });
+      cell.traverse((object) => {
+        if (object.isSprite) object.quaternion.copy(camera.quaternion);
+      });
       renderer.render(scene, camera);
       requestAnimationFrame(render);
     }
