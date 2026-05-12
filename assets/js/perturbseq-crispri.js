@@ -232,6 +232,81 @@
     return { chromatin, accessiblePatch };
   }
 
+  function addReadoutDetail(THREE, group, colors) {
+    const readout = new THREE.Group();
+    const beadMaterial = makeMaterial(THREE, "#edf6ff", { transparent: true, opacity: 0.92 });
+    const barcodeColors = [colors.blue, colors.green, colors.gold, colors.purple];
+
+    const bead = new THREE.Mesh(new THREE.SphereGeometry(0.22, 32, 18), beadMaterial);
+    bead.position.set(1.1, -1.08, 0.18);
+    readout.add(bead);
+
+    barcodeColors.forEach((color, index) => {
+      const band = new THREE.Mesh(new THREE.TorusGeometry(0.235 + index * 0.012, 0.008, 8, 48), makeMaterial(THREE, color));
+      band.position.copy(bead.position);
+      band.rotation.set(Math.PI / 2, 0.2 + index * 0.28, 0.18);
+      readout.add(band);
+    });
+
+    const umiMaterial = makeMaterial(THREE, colors.gold, { emissive: colors.gold, emissiveIntensity: 0.08 });
+    [
+      [0.72, -0.78, -0.16, "UMI"],
+      [1.48, -0.86, 0.28, "UMI"],
+      [0.92, -1.42, 0.44, "guide tag"],
+    ].forEach(([x, y, z, label]) => {
+      const tag = new THREE.Mesh(new THREE.BoxGeometry(label === "UMI" ? 0.16 : 0.28, 0.07, 0.05), umiMaterial);
+      tag.position.set(x, y, z);
+      tag.rotation.set(0.1, 0.35, -0.22);
+      readout.add(tag);
+    });
+
+    [
+      [
+        [0.48, -0.68, -0.2],
+        [0.78, -0.74, -0.08],
+        [1.02, -0.96, 0.08],
+        [1.18, -1.08, 0.18],
+      ],
+      [
+        [1.56, -0.78, 0.22],
+        [1.34, -0.92, 0.18],
+        [1.12, -1.06, 0.18],
+        [0.9, -1.18, 0.08],
+      ],
+      [
+        [0.76, -1.46, 0.52],
+        [0.94, -1.34, 0.36],
+        [1.08, -1.16, 0.2],
+      ],
+    ].forEach((points, index) => {
+      const tube = addTube(THREE, readout, points, index === 2 ? colors.green : "#6f7f91", 0.02);
+      tube.material.transparent = true;
+      tube.material.opacity = 0.88;
+    });
+
+    const polyAMaterial = makeMaterial(THREE, "#f5f8ff");
+    [
+      [0.44, -0.68, -0.22],
+      [1.6, -0.78, 0.24],
+    ].forEach(([x, y, z]) => {
+      for (let i = 0; i < 5; i++) {
+        const beadA = new THREE.Mesh(new THREE.SphereGeometry(0.025, 10, 8), polyAMaterial);
+        beadA.position.set(x - i * 0.04, y + i * 0.008, z);
+        readout.add(beadA);
+      }
+    });
+
+    const guideTag = new THREE.Mesh(
+      new THREE.SphereGeometry(0.07, 18, 12),
+      makeMaterial(THREE, colors.green, { emissive: colors.green, emissiveIntensity: 0.18 })
+    );
+    guideTag.position.set(0.84, -1.34, 0.42);
+    readout.add(guideTag);
+
+    group.add(readout);
+    return readout;
+  }
+
   function initViewer(THREE, root) {
     const stage = root.querySelector(".perturbseq-three-stage");
     const canvas = root.querySelector(".perturbseq-three-canvas");
@@ -312,7 +387,7 @@
     nucleolus.position.set(-0.92, -0.28, 0.34);
     cell.add(nucleolus);
 
-    const chromatinContext = addChromatinContext(THREE, coarseChromatinLayer, colors);
+    addChromatinContext(THREE, coarseChromatinLayer, colors);
     const dnaSequence = addDnaSequence(THREE, fineTargetLayer, colors);
 
     const cas9 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 18), makeMaterial(THREE, colors.blue));
@@ -393,60 +468,28 @@
     );
     cell.add(er);
 
-    const guideMaterial = makeMaterial(THREE, colors.green, { emissive: colors.green, emissiveIntensity: 0.16 });
-    [
-      [1.0, -0.88, -0.28],
-      [1.34, -1.16, 0.22],
-      [0.68, -1.22, 0.52],
-    ].forEach(([x, y, z]) => {
-      const guide = new THREE.Mesh(new THREE.SphereGeometry(0.08, 18, 12), guideMaterial);
-      guide.position.set(x, y, z);
-      cell.add(guide);
-    });
-
-    addTube(
-      THREE,
-      cell,
-      [
-        [0.78, -0.7, -0.2],
-        [1.16, -0.54, -0.02],
-        [1.54, -0.68, 0.08],
-      ],
-      "#7f8a97",
-      0.026
-    );
-    addTube(
-      THREE,
-      cell,
-      [
-        [0.26, -1.08, 0.16],
-        [0.68, -0.9, 0.38],
-        [1.02, -1.04, 0.52],
-      ],
-      "#7f8a97",
-      0.026
-    );
+    const readoutDetail = addReadoutDetail(THREE, cell, colors);
 
     addLabel(THREE, coarseLabels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
     addLabel(THREE, coarseLabels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
     addLabel(THREE, coarseLabels, "chromatin fiber", new THREE.Vector3(-2.08, 0.55, 1.08), new THREE.Vector3(-0.72, -0.05, 0.34));
     addLabel(THREE, coarseLabels, "histone-wrapped DNA", new THREE.Vector3(1.18, 0.64, 0.84), new THREE.Vector3(1.12, -0.06, 0.08));
-    addLabel(THREE, coarseLabels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
+    addLabel(
+      THREE,
+      coarseLabels,
+      "barcode + UMI readout",
+      new THREE.Vector3(0.92, -1.78, 0.38),
+      readoutDetail.position.clone().add(new THREE.Vector3(1.08, -1.08, 0.18))
+    );
     addLabel(THREE, fineLabels, "open DNA target", new THREE.Vector3(-0.7, 1.08, 1.22), dnaSequence.position);
     addLabel(THREE, fineLabels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.26, 1.1, 1.02), cas9.position);
 
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. At this scale, the nucleus shows chromatin fiber rather than nucleotide-level DNA.",
+        text: "Drag to rotate one perturbed cell. The whole-cell view includes chromatin fiber, the open DNA target with dCas9-KRAB, and barcode-linked guide/mRNA readout molecules.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
-      },
-      nucleus: {
-        label: "Chromatin accessibility",
-        text: "At the chromatin scale, the model shows fiber organization and histone-wrapped DNA. Zoom further into the open region to resolve the DNA double helix and bound dCas9-KRAB.",
-        target: new THREE.Vector3(-0.12, 0.1, 0.36),
-        distance: 3.4,
       },
       binding: {
         label: "Open target sequence",
@@ -456,7 +499,7 @@
       },
       readout: {
         label: "Transcript and guide readout",
-        text: "The lower cytoplasm shows guide identifiers and transcript molecules that are captured with the same cell barcode.",
+        text: "The readout area shows a capture bead with cell barcode bands, UMI tags, poly-A mRNA molecules, and a guide tag that links perturbation identity to the same cell.",
         target: new THREE.Vector3(1.02, -0.98, 0.18),
         distance: 3.4,
       },
@@ -482,12 +525,10 @@
     }
 
     function updateDetailVisibility() {
-      const showFineTarget = state.focus === "binding";
-      const showCoarseChromatin = !showFineTarget;
-      fineTargetLayer.visible = showFineTarget;
-      fineLabels.visible = showFineTarget && state.distance > 2.8 && camera.aspect >= 0.75;
-      coarseChromatinLayer.visible = showCoarseChromatin;
-      coarseLabels.visible = showCoarseChromatin && camera.aspect >= 0.75;
+      fineTargetLayer.visible = true;
+      coarseChromatinLayer.visible = true;
+      fineLabels.visible = state.focus === "binding" && state.distance > 2.8 && camera.aspect >= 0.75;
+      coarseLabels.visible = camera.aspect >= 0.75;
     }
 
     function updateCamera() {
