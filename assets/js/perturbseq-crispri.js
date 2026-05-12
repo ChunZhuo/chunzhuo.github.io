@@ -191,18 +191,6 @@
 
   function addChromatinContext(THREE, group, colors) {
     const chromatin = new THREE.Group();
-    const zone = new THREE.Mesh(
-      new THREE.SphereGeometry(1.18, 36, 24),
-      makeMaterial(THREE, colors.purple, {
-        transparent: true,
-        opacity: 0.14,
-        depthWrite: false,
-      })
-    );
-    zone.position.set(-0.28, 0.08, 0.08);
-    zone.scale.set(1.32, 0.74, 0.54);
-    chromatin.add(zone);
-
     addTube(
       THREE,
       chromatin,
@@ -241,7 +229,7 @@
     chromatin.add(accessiblePatch);
 
     group.add(chromatin);
-    return { chromatin, zone, accessiblePatch };
+    return { chromatin, accessiblePatch };
   }
 
   function initViewer(THREE, root) {
@@ -441,7 +429,7 @@
 
     addLabel(THREE, coarseLabels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
     addLabel(THREE, coarseLabels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
-    addLabel(THREE, coarseLabels, "chromatin zone", new THREE.Vector3(-2.08, 0.55, 1.08), chromatinContext.zone.position);
+    addLabel(THREE, coarseLabels, "chromatin fiber", new THREE.Vector3(-2.08, 0.55, 1.08), new THREE.Vector3(-0.72, -0.05, 0.34));
     addLabel(THREE, coarseLabels, "histone-wrapped DNA", new THREE.Vector3(1.18, 0.64, 0.84), new THREE.Vector3(1.12, -0.06, 0.08));
     addLabel(THREE, coarseLabels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
     addLabel(THREE, fineLabels, "open DNA target", new THREE.Vector3(-0.7, 1.08, 1.22), dnaSequence.position);
@@ -450,13 +438,13 @@
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. At this scale, the nucleus shows a broader chromatin zone rather than nucleotide-level DNA.",
+        text: "Drag to rotate one perturbed cell. At this scale, the nucleus shows chromatin fiber rather than nucleotide-level DNA.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
       },
       nucleus: {
         label: "Chromatin accessibility",
-        text: "At the chromatin scale, the model shows fiber organization and histone-wrapped DNA. Zoom further into the open target to reveal the double helix and dCas9.",
+        text: "At the chromatin scale, the model shows fiber organization and histone-wrapped DNA. Zoom further into the open region to resolve the DNA double helix and bound dCas9-KRAB.",
         target: new THREE.Vector3(-0.12, 0.1, 0.36),
         distance: 3.4,
       },
