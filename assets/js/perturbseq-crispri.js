@@ -274,7 +274,13 @@
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
     const cell = new THREE.Group();
     const labels = new THREE.Group();
+    const coarseChromatinLayer = new THREE.Group();
+    const fineTargetLayer = new THREE.Group();
+    const coarseLabels = new THREE.Group();
+    const fineLabels = new THREE.Group();
     scene.add(cell, labels);
+    labels.add(coarseLabels, fineLabels);
+    cell.add(coarseChromatinLayer, fineTargetLayer);
 
     scene.add(new THREE.HemisphereLight(0xffffff, 0x8aa0b8, 2.1));
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.7);
@@ -318,21 +324,21 @@
     nucleolus.position.set(-0.92, -0.28, 0.34);
     cell.add(nucleolus);
 
-    const chromatinContext = addChromatinContext(THREE, cell, colors);
-    const dnaSequence = addDnaSequence(THREE, cell, colors);
+    const chromatinContext = addChromatinContext(THREE, coarseChromatinLayer, colors);
+    const dnaSequence = addDnaSequence(THREE, fineTargetLayer, colors);
 
     const cas9 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 18), makeMaterial(THREE, colors.blue));
     cas9.position.set(-0.2, 0.38, 0.54);
-    cell.add(cas9);
+    fineTargetLayer.add(cas9);
 
     const krab = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.2, 0.18), makeMaterial(THREE, colors.purple));
     krab.position.set(0.04, 0.54, 0.58);
     krab.rotation.set(0.2, 0.4, 0.15);
-    cell.add(krab);
+    fineTargetLayer.add(krab);
 
     addTube(
       THREE,
-      cell,
+      fineTargetLayer,
       [
         [-0.48, 0.04, 0.48],
         [-0.34, 0.02, 0.7],
@@ -346,11 +352,11 @@
     const rnap = new THREE.Mesh(new THREE.CapsuleGeometry(0.14, 0.42, 8, 24), makeMaterial(THREE, colors.gold));
     rnap.position.set(0.82, 0.18, 0.43);
     rnap.rotation.z = Math.PI / 2;
-    cell.add(rnap);
+    fineTargetLayer.add(rnap);
 
     addTube(
       THREE,
-      cell,
+      fineTargetLayer,
       [
         [0.98, 0.15, 0.4],
         [1.28, 0.12, 0.53],
@@ -433,24 +439,24 @@
       0.026
     );
 
-    addLabel(THREE, labels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
-    addLabel(THREE, labels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
-    addLabel(THREE, labels, "chromatin zone", new THREE.Vector3(-2.08, 0.55, 1.08), chromatinContext.zone.position);
-    addLabel(THREE, labels, "open DNA target", new THREE.Vector3(-0.7, 1.08, 1.22), dnaSequence.position);
-    addLabel(THREE, labels, "histone-wrapped DNA", new THREE.Vector3(1.18, 0.64, 0.84), new THREE.Vector3(1.12, -0.06, 0.08));
-    addLabel(THREE, labels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.26, 1.1, 1.02), cas9.position);
-    addLabel(THREE, labels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
+    addLabel(THREE, coarseLabels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
+    addLabel(THREE, coarseLabels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
+    addLabel(THREE, coarseLabels, "chromatin zone", new THREE.Vector3(-2.08, 0.55, 1.08), chromatinContext.zone.position);
+    addLabel(THREE, coarseLabels, "histone-wrapped DNA", new THREE.Vector3(1.18, 0.64, 0.84), new THREE.Vector3(1.12, -0.06, 0.08));
+    addLabel(THREE, coarseLabels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
+    addLabel(THREE, fineLabels, "open DNA target", new THREE.Vector3(-0.7, 1.08, 1.22), dnaSequence.position);
+    addLabel(THREE, fineLabels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.26, 1.1, 1.02), cas9.position);
 
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. At this scale, the nucleus contains a broader chromatin zone, with the accessible target region embedded inside it.",
+        text: "Drag to rotate one perturbed cell. At this scale, the nucleus shows a broader chromatin zone rather than nucleotide-level DNA.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
       },
       nucleus: {
         label: "Chromatin accessibility",
-        text: "Zooming into the nucleus shows chromatin fiber: some DNA is wrapped around histone proteins, while the highlighted target segment remains open.",
+        text: "At the chromatin scale, the model shows fiber organization and histone-wrapped DNA. Zoom further into the open target to reveal the double helix and dCas9.",
         target: new THREE.Vector3(-0.12, 0.1, 0.36),
         distance: 3.4,
       },
@@ -487,6 +493,15 @@
       labels.visible = camera.aspect >= 0.75;
     }
 
+    function updateDetailVisibility() {
+      const showFineTarget = state.focus === "binding" || state.distance < 2.8;
+      const showCoarseChromatin = !showFineTarget;
+      fineTargetLayer.visible = showFineTarget;
+      fineLabels.visible = showFineTarget && state.distance > 2.8 && camera.aspect >= 0.75;
+      coarseChromatinLayer.visible = showCoarseChromatin;
+      coarseLabels.visible = showCoarseChromatin && camera.aspect >= 0.75;
+    }
+
     function updateCamera() {
       state.pitch = clamp(state.pitch, -1.1, 1.1);
       state.distance = clamp(state.distance, 1.8, 9);
@@ -499,6 +514,7 @@
       );
       camera.lookAt(state.target);
       if (status) status.textContent = `${Math.round((focuses.cell.distance / state.distance) * 100)}%`;
+      updateDetailVisibility();
     }
 
     function setFocus(name) {
