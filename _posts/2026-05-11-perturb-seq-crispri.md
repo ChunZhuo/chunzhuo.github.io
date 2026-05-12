@@ -312,14 +312,14 @@ _styles: |
 
 CRISPRi is a useful perturbation because it behaves like a dimmer switch: the guide RNA brings a catalytically inactive Cas9 repressor to a regulatory region, and transcription drops without making a DNA double-strand break. Perturb-seq adds a pooled single-cell readout, so each cell carries both a perturbation identity and a transcriptome.
 
-The interactive view below is one continuous 3D cell, not a sequence of separate plots. Drag the cell to rotate it, scroll to zoom, or use the focus buttons to inspect the nucleus, organelles, and the sgRNA target-transcript interaction.
+The interactive view below is one continuous 3D cell, not a sequence of separate plots. Drag the cell to rotate it, scroll to zoom, or use the focus buttons to move from the whole cell into the chromatin zone, the open sgRNA target sequence, and the transcript readout.
 
 <div class="perturbseq-crispri-viewer" data-zoom="whole">
   <div class="perturbseq-toolbar" aria-label="Perturb-seq CRISPRi controls">
     <div class="perturbseq-focus-buttons">
       <button type="button" data-focus-target="cell">Whole cell</button>
-      <button type="button" data-focus-target="nucleus">Nucleus</button>
-      <button type="button" data-focus-target="binding">sgRNA target</button>
+      <button type="button" data-focus-target="nucleus">Chromatin</button>
+      <button type="button" data-focus-target="binding">Open target</button>
       <button type="button" data-focus-target="readout">Readout</button>
     </div>
     <div class="perturbseq-zoom-controls">

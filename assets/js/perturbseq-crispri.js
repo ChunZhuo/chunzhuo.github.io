@@ -152,6 +152,98 @@
     return dna;
   }
 
+  function addNucleosome(THREE, group, position, rotation, colors) {
+    const nucleosome = new THREE.Group();
+    const histoneMaterial = makeMaterial(THREE, colors.purple, { transparent: true, opacity: 0.82 });
+    const coreOffsets = [
+      [-0.08, 0.04, 0.06],
+      [0.08, 0.04, 0.06],
+      [-0.08, -0.04, 0.06],
+      [0.08, -0.04, 0.06],
+      [-0.08, 0.04, -0.06],
+      [0.08, 0.04, -0.06],
+      [-0.08, -0.04, -0.06],
+      [0.08, -0.04, -0.06],
+    ];
+
+    coreOffsets.forEach(([x, y, z]) => {
+      const histone = new THREE.Mesh(new THREE.SphereGeometry(0.08, 18, 12), histoneMaterial);
+      histone.position.set(x, y, z);
+      nucleosome.add(histone);
+    });
+
+    const wrapA = [];
+    const wrapB = [];
+    for (let i = 0; i <= 54; i++) {
+      const t = (i / 54) * Math.PI * 2.05;
+      const x = -0.2 + (i / 54) * 0.4;
+      wrapA.push([x, Math.cos(t) * 0.22, Math.sin(t) * 0.22]);
+      wrapB.push([x, Math.cos(t + Math.PI) * 0.22, Math.sin(t + Math.PI) * 0.22]);
+    }
+
+    addTube(THREE, nucleosome, wrapA, colors.blue, 0.012);
+    addTube(THREE, nucleosome, wrapB, colors.blue, 0.012);
+    nucleosome.position.copy(position);
+    nucleosome.rotation.set(rotation.x, rotation.y, rotation.z);
+    group.add(nucleosome);
+    return nucleosome;
+  }
+
+  function addChromatinContext(THREE, group, colors) {
+    const chromatin = new THREE.Group();
+    const zone = new THREE.Mesh(
+      new THREE.SphereGeometry(1.18, 36, 24),
+      makeMaterial(THREE, colors.purple, {
+        transparent: true,
+        opacity: 0.14,
+        depthWrite: false,
+      })
+    );
+    zone.position.set(-0.28, 0.08, 0.08);
+    zone.scale.set(1.32, 0.74, 0.54);
+    chromatin.add(zone);
+
+    addTube(
+      THREE,
+      chromatin,
+      [
+        [-1.56, -0.36, -0.02],
+        [-1.18, -0.26, 0.22],
+        [-0.88, -0.1, 0.38],
+        [-0.5, 0.04, 0.44],
+      ],
+      "#8aa2c5",
+      0.018
+    );
+    addTube(
+      THREE,
+      chromatin,
+      [
+        [0.62, 0.24, 0.48],
+        [0.9, 0.16, 0.26],
+        [1.2, 0.0, 0.1],
+        [1.42, -0.18, -0.04],
+      ],
+      "#8aa2c5",
+      0.018
+    );
+
+    addNucleosome(THREE, chromatin, new THREE.Vector3(-1.34, -0.3, 0.08), new THREE.Euler(0.2, -0.3, 0.7), colors);
+    addNucleosome(THREE, chromatin, new THREE.Vector3(-1.02, -0.14, 0.3), new THREE.Euler(-0.2, 0.3, -0.1), colors);
+    addNucleosome(THREE, chromatin, new THREE.Vector3(1.12, -0.06, 0.08), new THREE.Euler(0.1, 0.4, -0.8), colors);
+
+    const accessiblePatch = new THREE.Mesh(
+      new THREE.TorusGeometry(0.46, 0.018, 10, 72),
+      makeMaterial(THREE, colors.gold, { emissive: colors.gold, emissiveIntensity: 0.18 })
+    );
+    accessiblePatch.position.set(-0.02, 0.2, 0.48);
+    accessiblePatch.rotation.set(1.28, 0.08, 0.12);
+    chromatin.add(accessiblePatch);
+
+    group.add(chromatin);
+    return { chromatin, zone, accessiblePatch };
+  }
+
   function initViewer(THREE, root) {
     const stage = root.querySelector(".perturbseq-three-stage");
     const canvas = root.querySelector(".perturbseq-three-canvas");
@@ -226,6 +318,7 @@
     nucleolus.position.set(-0.92, -0.28, 0.34);
     cell.add(nucleolus);
 
+    const chromatinContext = addChromatinContext(THREE, cell, colors);
     const dnaSequence = addDnaSequence(THREE, cell, colors);
 
     const cas9 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 32, 18), makeMaterial(THREE, colors.blue));
@@ -342,26 +435,28 @@
 
     addLabel(THREE, labels, "cell membrane", new THREE.Vector3(-2.78, 1.7, 0), new THREE.Vector3(-2.48, 0.86, 0.02));
     addLabel(THREE, labels, "nucleus", new THREE.Vector3(-1.95, 1.28, 0.28), nucleus.position);
-    addLabel(THREE, labels, "DNA sequence", new THREE.Vector3(-1.05, 1.02, 1.05), dnaSequence.position);
+    addLabel(THREE, labels, "chromatin zone", new THREE.Vector3(-2.08, 0.55, 1.08), chromatinContext.zone.position);
+    addLabel(THREE, labels, "open DNA target", new THREE.Vector3(-0.7, 1.08, 1.22), dnaSequence.position);
+    addLabel(THREE, labels, "histone-wrapped DNA", new THREE.Vector3(1.18, 0.64, 0.84), new THREE.Vector3(1.12, -0.06, 0.08));
     addLabel(THREE, labels, "dCas9-KRAB + sgRNA", new THREE.Vector3(0.26, 1.1, 1.02), cas9.position);
     addLabel(THREE, labels, "guide + mRNA readout", new THREE.Vector3(1.02, -1.78, 0.38), new THREE.Vector3(1.1, -1.02, 0.16));
 
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. The membrane stays still unless you move the view; callout lines point to the nucleus, DNA sequence, CRISPRi complex, and readout molecules.",
+        text: "Drag to rotate one perturbed cell. At this scale, the nucleus contains a broader chromatin zone, with the accessible target region embedded inside it.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
       },
       nucleus: {
-        label: "Nucleus and DNA sequence",
-        text: "The nucleus contains a nucleotide-level DNA segment: paired A/T and C/G bases sit between two sugar-phosphate backbones.",
-        target: new THREE.Vector3(-0.16, 0.22, 0.52),
+        label: "Chromatin accessibility",
+        text: "Zooming into the nucleus shows chromatin fiber: some DNA is wrapped around histone proteins, while the highlighted target segment remains open.",
+        target: new THREE.Vector3(-0.12, 0.1, 0.36),
         distance: 3.4,
       },
       binding: {
-        label: "sgRNA target binding",
-        text: "The sgRNA-dCas9-KRAB complex is positioned on the DNA sequence near RNA polymerase, showing where repression acts at the target locus.",
+        label: "Open target sequence",
+        text: "At the accessible region, individual A/T and C/G bases are exposed and the sgRNA-dCas9-KRAB complex can bind near RNA polymerase.",
         target: new THREE.Vector3(0.12, 0.42, 0.58),
         distance: 2.4,
       },
