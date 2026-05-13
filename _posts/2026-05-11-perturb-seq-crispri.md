@@ -191,13 +191,6 @@ _styles: |
     stroke-width: 7;
   }
 
-  .perturbseq-target-window {
-    fill: color-mix(in srgb, var(--ps-gold) 18%, transparent);
-    stroke: var(--ps-gold);
-    stroke-dasharray: 7 5;
-    stroke-width: 2;
-  }
-
   .perturbseq-sgrna {
     fill: none;
     stroke: var(--ps-green);
@@ -353,7 +346,6 @@ The interactive view below is one continuous 3D cell, not a sequence of separate
           <ellipse class="perturbseq-nucleolus" cx="374" cy="360" rx="48" ry="35"></ellipse>
           <path class="perturbseq-dna" d="M306 292 C356 238 430 334 482 283 S596 256 625 323"></path>
           <path class="perturbseq-dna" d="M302 335 C366 386 421 283 488 346 S590 394 636 338" opacity="0.72"></path>
-          <rect class="perturbseq-target-window perturbseq-pulse" x="430" y="244" width="142" height="72" rx="10"></rect>
           <text class="perturbseq-label" x="356" y="187">nucleus</text>
           <text class="perturbseq-small perturbseq-detail-medium" x="315" y="405">nucleolus</text>
         </g>

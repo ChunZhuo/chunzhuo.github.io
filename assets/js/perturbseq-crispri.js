@@ -220,16 +220,45 @@
     addNucleosome(THREE, chromatin, new THREE.Vector3(-1.02, -0.14, 0.3), new THREE.Euler(-0.2, 0.3, -0.1), colors);
     addNucleosome(THREE, chromatin, new THREE.Vector3(1.12, -0.06, 0.08), new THREE.Euler(0.1, 0.4, -0.8), colors);
 
-    const accessiblePatch = new THREE.Mesh(
-      new THREE.TorusGeometry(0.46, 0.018, 10, 72),
-      makeMaterial(THREE, colors.gold, { emissive: colors.gold, emissiveIntensity: 0.18 })
+    const openRegion = new THREE.Group();
+    addTube(
+      THREE,
+      openRegion,
+      [
+        [-0.5, 0.04, 0.44],
+        [-0.28, 0.16, 0.58],
+        [-0.04, 0.22, 0.64],
+        [0.22, 0.2, 0.58],
+        [0.44, 0.16, 0.5],
+        [0.62, 0.24, 0.48],
+      ],
+      colors.blue,
+      0.024
     );
-    accessiblePatch.position.set(-0.02, 0.2, 0.48);
-    accessiblePatch.rotation.set(1.28, 0.08, 0.12);
-    chromatin.add(accessiblePatch);
+    addTube(
+      THREE,
+      openRegion,
+      [
+        [-0.46, -0.02, 0.36],
+        [-0.24, 0.08, 0.46],
+        [0.0, 0.13, 0.52],
+        [0.24, 0.12, 0.48],
+        [0.46, 0.1, 0.4],
+        [0.66, 0.2, 0.4],
+      ],
+      "#a7bdd9",
+      0.016
+    );
+    [-0.22, 0.02, 0.26].forEach((x, index) => {
+      const basePair = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.26, 8), makeMaterial(THREE, index === 1 ? colors.green : "#a7bdd9"));
+      basePair.position.set(x, 0.15 + index * 0.02, 0.54 + index * 0.02);
+      basePair.rotation.set(1.22, 0.18, Math.PI / 2);
+      openRegion.add(basePair);
+    });
+    chromatin.add(openRegion);
 
     group.add(chromatin);
-    return { chromatin, accessiblePatch };
+    return { chromatin, openRegion };
   }
 
   function addReadoutDetail(THREE, group, colors) {
@@ -487,13 +516,13 @@
     const focuses = {
       cell: {
         label: "Whole 3D cell",
-        text: "Drag to rotate one perturbed cell. The whole-cell view includes chromatin fiber, the open DNA target with dCas9-KRAB, and barcode-linked guide/mRNA readout molecules.",
+        text: "Drag to rotate one perturbed cell. The whole-cell view keeps the chromatin fiber inside the nucleus, with a short accessible DNA region visible before molecular zoom-in.",
         target: new THREE.Vector3(0, 0, 0),
         distance: 7.2,
       },
       binding: {
-        label: "Open target sequence",
-        text: "At the accessible region, individual A/T and C/G bases are exposed and the sgRNA-dCas9-KRAB complex can bind near RNA polymerase.",
+        label: "Accessible DNA sequence",
+        text: "Zooming into the accessible region reveals the paired DNA bases, sgRNA pairing, and the dCas9-KRAB complex bound near RNA polymerase.",
         target: new THREE.Vector3(0.12, 0.42, 0.58),
         distance: 2.4,
       },
@@ -525,9 +554,10 @@
     }
 
     function updateDetailVisibility() {
-      fineTargetLayer.visible = true;
+      const showTargetDetail = state.focus === "binding" || state.distance <= 3.1;
+      fineTargetLayer.visible = showTargetDetail;
       coarseChromatinLayer.visible = true;
-      fineLabels.visible = state.focus === "binding" && state.distance > 2.8 && camera.aspect >= 0.75;
+      fineLabels.visible = showTargetDetail && camera.aspect >= 0.75;
       coarseLabels.visible = camera.aspect >= 0.75;
     }
 
