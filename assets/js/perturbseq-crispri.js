@@ -205,7 +205,7 @@
     const centers = [];
     for (let i = 0; i < 8; i++) {
       const t = i / 7;
-      centers.push(new THREE.Vector3(-1.05 + t * 2.1, Math.sin(t * Math.PI * 2.2) * 0.16, Math.cos(t * Math.PI * 2.8) * 0.12));
+      centers.push(new THREE.Vector3(-0.92 + t * 1.84, Math.sin(t * Math.PI * 2.2) * 0.16, Math.cos(t * Math.PI * 2.8) * 0.12));
     }
 
     centers.forEach((center, index) => {
@@ -226,37 +226,37 @@
       }
     });
 
-    fiber.position.set(0.24, -0.28, 0.32);
+    fiber.position.set(-0.1, 0.03, 0.24);
     group.add(fiber);
     return fiber;
   }
 
   function addSingleNucleosomeDetail(THREE, group, colors) {
     const detail = new THREE.Group();
-    addNucleosome(THREE, detail, new THREE.Vector3(0, 0, 0), new THREE.Euler(0.05, -0.4, 0.2), 1.35, colors);
+    addNucleosome(THREE, detail, new THREE.Vector3(0, 0, 0), new THREE.Euler(0.05, -0.4, 0.2), 0.45, colors);
     addTube(
       THREE,
       detail,
       [
-        [-0.78, -0.04, -0.14],
-        [-0.58, 0.08, -0.04],
-        [-0.42, 0.04, 0.04],
+        [-0.3, -0.02, -0.06],
+        [-0.22, 0.03, -0.02],
+        [-0.14, 0.02, 0.02],
       ],
       colors.dnaWhite,
-      0.018
+      0.01
     );
     addTube(
       THREE,
       detail,
       [
-        [0.42, -0.02, 0.04],
-        [0.58, -0.12, 0.14],
-        [0.82, -0.06, 0.2],
+        [0.14, -0.01, 0.02],
+        [0.22, -0.04, 0.06],
+        [0.3, -0.02, 0.08],
       ],
       colors.dnaBlue,
-      0.018
+      0.01
     );
-    detail.position.set(0.92, -0.42, 0.5);
+    detail.position.set(0.18, -0.04, 0.28);
     group.add(detail);
     return detail;
   }
@@ -303,8 +303,9 @@
 
     addTube(THREE, helix, strandA, colors.dnaBlue, 0.024);
     addTube(THREE, helix, strandB, colors.dnaWhite, 0.02);
-    helix.position.set(1.54, -0.55, 0.72);
-    helix.rotation.set(0.02, -0.12, 0.08);
+    helix.position.set(0.27, -0.04, 0.31);
+    helix.rotation.set(0.05, -0.46, 0.18);
+    helix.scale.setScalar(0.12);
     group.add(helix);
     return helix;
   }
@@ -418,21 +419,21 @@
       },
       fiber: {
         label: "Open nucleosome fiber",
-        text: "The loop resolves into an open beads-on-a-string fiber: nucleosomes connected by curved linker DNA.",
-        target: new THREE.Vector3(0.34, -0.22, 0.34),
-        distance: 1.62,
+        text: "The raw loop path resolves in place into an open beads-on-a-string fiber with nucleosomes on the same chromatin segment.",
+        target: new THREE.Vector3(-0.1, 0.03, 0.24),
+        distance: 1.55,
       },
       nucleosome: {
         label: "Single nucleosome",
-        text: "DNA wraps around a histone octamer with eight rounded protein subunits.",
-        target: new THREE.Vector3(0.92, -0.42, 0.5),
-        distance: 0.95,
+        text: "The view zooms into one bead from the fiber, showing the same nucleosome with DNA wrapped around the histone octamer.",
+        target: new THREE.Vector3(0.18, -0.04, 0.28),
+        distance: 0.8,
       },
       helix: {
         label: "DNA double helix",
-        text: "At the finest scale, the blue-white DNA strands separate into a smooth double helix with visible base pairs.",
-        target: new THREE.Vector3(1.54, -0.55, 0.72),
-        distance: 0.72,
+        text: "At the finest scale, the wrapped DNA at the nucleosome resolves into a double helix with visible base pairs.",
+        target: new THREE.Vector3(0.27, -0.04, 0.31),
+        distance: 0.25,
       },
     };
 
@@ -446,6 +447,7 @@
       pitch: 0.22,
       dragging: null,
       focus: "nucleus",
+      lastWheelStep: 0,
       time: 0,
     };
 
@@ -462,12 +464,12 @@
     function updateStageVisibility() {
       const index = stageOrder.indexOf(state.focus);
       const opacityByStage = [
-        [1, 0.85, 0.08, 0, 0, 0],
-        [0.65, 1, 0.25, 0, 0, 0],
-        [0.25, 0.55, 1, 0.25, 0, 0],
-        [0.12, 0.18, 0.45, 1, 0.35, 0.05],
-        [0.05, 0.08, 0.1, 0.45, 1, 0.25],
-        [0.02, 0.03, 0.05, 0.15, 0.38, 1],
+        [1, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 1],
       ];
       const opacities = opacityByStage[index] || opacityByStage[0];
       setGroupOpacity(nucleusGroup, opacities[0]);
@@ -483,7 +485,7 @@
 
     function updateCamera() {
       state.pitch = clamp(state.pitch, -1.05, 1.05);
-      state.distance = clamp(state.distance, 0.56, 8.6);
+      state.distance = clamp(state.distance, 0.08, 8.6);
       const displayDistance = state.cameraDistance * (camera.aspect < 0.75 ? 1.95 : 1);
       const cosPitch = Math.cos(state.pitch);
       camera.position.set(
@@ -508,6 +510,12 @@
         button.setAttribute("aria-pressed", pressed ? "true" : "false");
       });
       updateStageVisibility();
+    }
+
+    function stepFocus(direction) {
+      const index = stageOrder.indexOf(state.focus);
+      const nextIndex = clamp(index + direction, 0, stageOrder.length - 1);
+      setFocus(stageOrder[nextIndex]);
     }
 
     function render() {
@@ -563,7 +571,10 @@
       "wheel",
       function (event) {
         event.preventDefault();
-        state.distance *= event.deltaY < 0 ? 0.9 : 1.1;
+        const now = performance.now();
+        if (now - state.lastWheelStep < 260) return;
+        state.lastWheelStep = now;
+        stepFocus(event.deltaY < 0 ? 1 : -1);
       },
       { passive: false }
     );
@@ -572,8 +583,8 @@
       button.addEventListener("click", () => setFocus(button.dataset.focusTarget));
     });
 
-    if (zoomIn) zoomIn.addEventListener("click", () => (state.distance *= 0.84));
-    if (zoomOut) zoomOut.addEventListener("click", () => (state.distance *= 1.18));
+    if (zoomIn) zoomIn.addEventListener("click", () => stepFocus(1));
+    if (zoomOut) zoomOut.addEventListener("click", () => stepFocus(-1));
     if (reset) reset.addEventListener("click", () => setFocus("nucleus"));
 
     window.addEventListener("resize", resize);
