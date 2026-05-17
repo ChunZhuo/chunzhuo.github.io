@@ -315,6 +315,128 @@
     return helix;
   }
 
+  function addCrispriComplex(THREE, group, colors) {
+    const crispri = new THREE.Group();
+    const guide = [];
+    const guideStart = new THREE.Vector3(-0.18, 0.04, 0.02);
+    const guideEnd = new THREE.Vector3(0.18, 0.04, -0.02);
+
+    for (let i = 0; i <= 18; i++) {
+      const t = i / 18;
+      guide.push([
+        guideStart.x + (guideEnd.x - guideStart.x) * t,
+        guideStart.y + Math.sin(t * Math.PI) * 0.03,
+        guideStart.z + (guideEnd.z - guideStart.z) * t,
+      ]);
+    }
+
+    addTube(THREE, crispri, guide, colors.guide, 0.018);
+
+    const cas9 = new THREE.Mesh(
+      new THREE.SphereGeometry(0.16, 32, 22),
+      makeMaterial(THREE, colors.cas9)
+    );
+    cas9.scale.set(1.2, 0.9, 0.82);
+    cas9.position.set(0, 0.14, 0);
+    crispri.add(cas9);
+
+    const krab = new THREE.Mesh(
+      new THREE.SphereGeometry(0.09, 28, 18),
+      makeMaterial(THREE, colors.krab)
+    );
+    krab.position.set(0.12, 0.3, 0.02);
+    crispri.add(krab);
+
+    addCylinderBetween(
+      THREE,
+      crispri,
+      new THREE.Vector3(0.06, 0.22, 0.01),
+      new THREE.Vector3(0.1, 0.27, 0.02),
+      0.018,
+      colors.krab
+    );
+
+    const targetMarker = new THREE.Mesh(
+      new THREE.TorusGeometry(0.12, 0.012, 12, 36),
+      makeMaterial(THREE, colors.target, { transparent: true, opacity: 0.88 })
+    );
+    targetMarker.rotation.x = Math.PI / 2;
+    targetMarker.position.set(0, -0.02, 0);
+    targetMarker.userData.baseOpacity = 0.88;
+    crispri.add(targetMarker);
+
+    crispri.position.set(0.27, -0.04, 0.31);
+    crispri.rotation.set(0.05, -0.46, 0.18);
+    crispri.scale.setScalar(0.18);
+    group.add(crispri);
+    return crispri;
+  }
+
+  function addTranscriptRibbon(THREE, group, points, color, radius) {
+    const transcript = addTube(THREE, group, points, color, radius, { transparent: true, opacity: 0.92 });
+    transcript.userData.baseOpacity = 0.92;
+    return transcript;
+  }
+
+  function addRnaReadout(THREE, group, colors) {
+    const readout = new THREE.Group();
+
+    const nucleusShell = new THREE.Mesh(
+      new THREE.SphereGeometry(0.98, 48, 28),
+      makeMaterial(THREE, colors.nucleus, {
+        transparent: true,
+        opacity: 0.24,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      })
+    );
+    nucleusShell.userData.baseOpacity = 0.24;
+    nucleusShell.scale.set(1.08, 0.82, 0.78);
+    nucleusShell.position.set(-0.82, 0, 0);
+    readout.add(nucleusShell);
+
+    const pore = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.018, 12, 32), makeMaterial(THREE, colors.nucleus));
+    pore.rotation.y = Math.PI / 2;
+    pore.position.set(0.13, 0.04, 0);
+    readout.add(pore);
+
+    const backgroundTranscripts = [
+      [[-0.24, 0.34, -0.1], [0.2, 0.44, -0.08], [0.62, 0.32, -0.04], [1.02, 0.4, 0]],
+      [[-0.2, 0.02, 0.08], [0.18, 0.08, 0.12], [0.62, 0.02, 0.16], [1.08, 0.12, 0.18]],
+      [[-0.16, -0.28, -0.1], [0.18, -0.24, -0.06], [0.56, -0.34, -0.02], [1.02, -0.26, 0.02]],
+      [[0.18, 0.62, 0.12], [0.48, 0.72, 0.08], [0.82, 0.66, 0.14], [1.14, 0.74, 0.1]],
+    ];
+
+    backgroundTranscripts.forEach((points) => addTranscriptRibbon(THREE, readout, points, colors.rna, 0.024));
+
+    const targetTranscripts = [
+      [[-0.2, -0.02, -0.18], [0.14, -0.02, -0.18], [0.5, -0.08, -0.14], [0.82, -0.02, -0.1]],
+      [[0.08, -0.58, 0.1], [0.34, -0.54, 0.12], [0.62, -0.6, 0.14], [0.88, -0.56, 0.18]],
+    ];
+
+    targetTranscripts.forEach((points) => addTranscriptRibbon(THREE, readout, points, colors.target, 0.028));
+
+    const droplet = new THREE.Mesh(
+      new THREE.SphereGeometry(0.42, 36, 24),
+      makeMaterial(THREE, colors.readout, { transparent: true, opacity: 0.24, depthWrite: false })
+    );
+    droplet.userData.baseOpacity = 0.24;
+    droplet.position.set(1.42, 0.06, 0);
+    readout.add(droplet);
+
+    const barcode = addTextSprite(THREE, "cell barcode + guide ID", { width: 768, scale: [1.8, 0.36, 1], fontSize: 30 });
+    barcode.position.set(1.42, 0.58, 0);
+    readout.add(barcode);
+
+    const counts = addTextSprite(THREE, "mRNA counts", { width: 512, scale: [1.18, 0.34, 1], fontSize: 30 });
+    counts.position.set(1.42, -0.48, 0);
+    readout.add(counts);
+
+    readout.position.set(0, 0, 0);
+    group.add(readout);
+    return readout;
+  }
+
   function initViewer(THREE, root) {
     const stage = root.querySelector(".perturbseq-three-stage");
     const canvas = root.querySelector(".perturbseq-three-canvas");
@@ -338,6 +460,12 @@
       histoneC: "#6b8ac9",
       histoneD: "#b57cb6",
       nucleus: "#7fc7df",
+      guide: "#3b9467",
+      cas9: "#2f6fbd",
+      krab: "#7d62b8",
+      target: "#c85c5c",
+      rna: "#3b9467",
+      readout: "#d39b2c",
     };
 
     const scene = new THREE.Scene();
@@ -367,7 +495,9 @@
     const fiberGroup = new THREE.Group();
     const nucleosomeGroup = new THREE.Group();
     const helixGroup = new THREE.Group();
-    world.add(nucleusGroup, territoryGroup, loopGroup, fiberGroup, nucleosomeGroup, helixGroup);
+    const crispriGroup = new THREE.Group();
+    const readoutGroup = new THREE.Group();
+    world.add(nucleusGroup, territoryGroup, loopGroup, fiberGroup, nucleosomeGroup, helixGroup, crispriGroup, readoutGroup);
 
     const nucleus = new THREE.Mesh(
       new THREE.SphereGeometry(2.35, 72, 42),
@@ -395,6 +525,8 @@
     const fiber = addBeadsOnStringFiber(THREE, fiberGroup, colors);
     const nucleosome = addSingleNucleosomeDetail(THREE, nucleosomeGroup, colors);
     const helix = addDoubleHelixDetail(THREE, helixGroup, colors);
+    const crispri = addCrispriComplex(THREE, crispriGroup, colors);
+    const readout = addRnaReadout(THREE, readoutGroup, colors);
 
     addLabel(THREE, labels, "nucleus", new THREE.Vector3(-2.62, 1.46, 0.2), "nucleus");
     addLabel(THREE, labels, "chromosome territory", new THREE.Vector3(-1.85, 0.78, 0.95), "territory");
@@ -440,9 +572,21 @@
         target: new THREE.Vector3(0.27, -0.04, 0.31),
         distance: 0.25,
       },
+      crispri: {
+        label: "CRISPRi complex",
+        text: "An sgRNA guides dCas9-KRAB onto a target DNA segment, where the repressor blocks transcription without cutting the DNA.",
+        target: new THREE.Vector3(0.27, -0.04, 0.31),
+        distance: 0.3,
+      },
+      readout: {
+        label: "RNA readout",
+        text: "After repression, fewer target mRNA transcripts leave the nucleus; single-cell sequencing captures transcript counts together with the guide identity.",
+        target: new THREE.Vector3(0.28, 0.04, 0),
+        distance: 4.2,
+      },
     };
 
-    const stageOrder = ["nucleus", "territory", "loops", "fiber", "nucleosome", "helix"];
+    const stageOrder = ["nucleus", "territory", "loops", "fiber", "nucleosome", "helix", "crispri", "readout"];
     const state = {
       target: focuses.nucleus.target.clone(),
       cameraTarget: focuses.nucleus.target.clone(),
@@ -469,12 +613,14 @@
     function updateStageVisibility() {
       const index = stageOrder.indexOf(state.focus);
       const opacityByStage = [
-        [1, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1],
       ];
       const opacities = opacityByStage[index] || opacityByStage[0];
       setGroupOpacity(nucleusGroup, opacities[0]);
@@ -483,6 +629,8 @@
       setGroupOpacity(fiberGroup, opacities[3]);
       setGroupOpacity(nucleosomeGroup, opacities[4]);
       setGroupOpacity(helixGroup, opacities[5]);
+      setGroupOpacity(crispriGroup, opacities[6]);
+      setGroupOpacity(readoutGroup, opacities[7]);
       labels.children.forEach((label) => {
         label.visible = camera.aspect >= 0.78 && index < 4 && label.userData.stage === state.focus;
       });
@@ -534,6 +682,8 @@
       fiber.rotation.y = Math.sin(state.time * 0.6) * 0.08;
       nucleosome.rotation.y = Math.sin(state.time * 0.48) * 0.12;
       helix.rotation.x = Math.sin(state.time * 0.55) * 0.1;
+      crispri.rotation.z = Math.sin(state.time * 0.8) * 0.05;
+      readout.rotation.y = Math.sin(state.time * 0.28) * 0.04;
 
       labels.children.forEach((label) => {
         if (label.isSprite) label.quaternion.copy(camera.quaternion);

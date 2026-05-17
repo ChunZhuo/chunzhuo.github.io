@@ -305,7 +305,7 @@ _styles: |
 
 CRISPRi is a useful perturbation because it behaves like a dimmer switch: the guide RNA brings a catalytically inactive Cas9 repressor to a regulatory region, and transcription drops without making a DNA double-strand break. Perturb-seq adds a pooled single-cell readout, so each cell carries both a perturbation identity and a transcriptome.
 
-The interactive view below uses chromatin organization as the biological context for target accessibility. It follows one chromatin region from a semi-transparent nucleus into a chromosome territory, then lets the same loop resolve into a beads-on-a-string nucleosome fiber, a single nucleosome, and finally the DNA double helix on the wrapped DNA.
+The interactive view below uses chromatin organization as the biological context for target accessibility. It follows one chromatin region from a semi-transparent nucleus into a chromosome territory, then lets the same loop resolve into a beads-on-a-string nucleosome fiber, a single nucleosome, the DNA double helix on the wrapped DNA, the CRISPRi complex bound to a target DNA segment, and finally the RNA readout observed after repression.
 
 <div class="perturbseq-crispri-viewer" data-zoom="whole">
   <div class="perturbseq-toolbar" aria-label="Chromatin organization controls">
@@ -316,6 +316,8 @@ The interactive view below uses chromatin organization as the biological context
       <button type="button" data-focus-target="fiber">Fiber</button>
       <button type="button" data-focus-target="nucleosome">Nucleosome</button>
       <button type="button" data-focus-target="helix">DNA helix</button>
+      <button type="button" data-focus-target="crispri">CRISPRi</button>
+      <button type="button" data-focus-target="readout">RNA readout</button>
     </div>
     <div class="perturbseq-zoom-controls">
       <button type="button" data-zoom-action="out">-</button>
@@ -326,7 +328,7 @@ The interactive view below uses chromatin organization as the biological context
   </div>
 
   <div class="perturbseq-canvas-wrap">
-    <div class="perturbseq-three-stage" role="img" aria-label="Rotatable 3D scientific animation of eukaryotic chromatin organization from nucleus to DNA double helix">
+    <div class="perturbseq-three-stage" role="img" aria-label="Rotatable 3D scientific animation of eukaryotic chromatin organization from nucleus to CRISPRi and RNA readout">
       <canvas class="perturbseq-three-canvas"></canvas>
       <div class="perturbseq-three-hint">Drag to rotate · Scroll to zoom</div>
     </div>
