@@ -317,47 +317,145 @@
 
   function addCrispriComplex(THREE, group, colors) {
     const crispri = new THREE.Group();
-    const guide = [];
-    const guideStart = new THREE.Vector3(-0.18, 0.04, 0.02);
-    const guideEnd = new THREE.Vector3(0.18, 0.04, -0.02);
 
-    for (let i = 0; i <= 18; i++) {
-      const t = i / 18;
-      guide.push([
-        guideStart.x + (guideEnd.x - guideStart.x) * t,
-        guideStart.y + Math.sin(t * Math.PI) * 0.03,
-        guideStart.z + (guideEnd.z - guideStart.z) * t,
-      ]);
+    function addProteinLobe(name, color, position, scale, rotation) {
+      const lobe = new THREE.Mesh(new THREE.SphereGeometry(0.14, 32, 22), makeMaterial(THREE, color));
+      lobe.name = name;
+      lobe.position.copy(position);
+      lobe.scale.set(scale[0], scale[1], scale[2]);
+      lobe.rotation.set(rotation[0], rotation[1], rotation[2]);
+      crispri.add(lobe);
+      return lobe;
     }
 
-    addTube(THREE, crispri, guide, colors.guide, 0.018);
+    function addAlphaHelix(center, radius, length, color, rotation) {
+      const points = [];
+      for (let i = 0; i <= 42; i++) {
+        const t = i / 42;
+        const phase = t * Math.PI * 7;
+        points.push([
+          -length / 2 + t * length,
+          Math.cos(phase) * radius,
+          Math.sin(phase) * radius,
+        ]);
+      }
+      const helix = new THREE.Group();
+      addTube(THREE, helix, points, color, 0.008);
+      helix.position.copy(center);
+      helix.rotation.set(rotation[0], rotation[1], rotation[2]);
+      crispri.add(helix);
+      return helix;
+    }
 
-    const cas9 = new THREE.Mesh(
-      new THREE.SphereGeometry(0.16, 32, 22),
-      makeMaterial(THREE, colors.cas9)
-    );
-    cas9.scale.set(1.2, 0.9, 0.82);
-    cas9.position.set(0, 0.14, 0);
-    crispri.add(cas9);
+    function addNucleotideBeads(points, color, radius) {
+      points.forEach((point, index) => {
+        if (index % 2 !== 0) return;
+        const bead = new THREE.Mesh(new THREE.SphereGeometry(radius, 14, 10), makeMaterial(THREE, color));
+        bead.position.set(point[0], point[1], point[2]);
+        crispri.add(bead);
+      });
+    }
 
-    const krab = new THREE.Mesh(
-      new THREE.SphereGeometry(0.09, 28, 18),
-      makeMaterial(THREE, colors.krab)
-    );
-    krab.position.set(0.12, 0.3, 0.02);
-    crispri.add(krab);
+    const dnaA = [];
+    const dnaB = [];
+    for (let i = 0; i <= 18; i++) {
+      const t = i / 18;
+      const x = -0.34 + t * 0.68;
+      const phase = i * 0.82;
+      dnaA.push([x, Math.cos(phase) * 0.055 - 0.04, Math.sin(phase) * 0.055]);
+      dnaB.push([x, Math.cos(phase + Math.PI) * 0.055 - 0.04, Math.sin(phase + Math.PI) * 0.055]);
+      if (i % 2 === 0) {
+        addCylinderBetween(
+          THREE,
+          crispri,
+          new THREE.Vector3(dnaA[i][0], dnaA[i][1], dnaA[i][2]),
+          new THREE.Vector3(dnaB[i][0], dnaB[i][1], dnaB[i][2]),
+          0.0045,
+          "#bcc9d8"
+        );
+      }
+    }
+    addTube(THREE, crispri, dnaA, colors.dnaBlue, 0.01);
+    addTube(THREE, crispri, dnaB, colors.dnaWhite, 0.008);
+    addNucleotideBeads(dnaA, colors.dnaBlue, 0.014);
+    addNucleotideBeads(dnaB, colors.dnaWhite, 0.012);
 
-    addCylinderBetween(
-      THREE,
-      crispri,
-      new THREE.Vector3(0.06, 0.22, 0.01),
-      new THREE.Vector3(0.1, 0.27, 0.02),
-      0.018,
-      colors.krab
+    const guide = [];
+    for (let i = 0; i <= 22; i++) {
+      const t = i / 22;
+      const x = -0.31 + t * 0.62;
+      guide.push([
+        x,
+        0.012 + Math.sin(t * Math.PI * 2.4) * 0.014,
+        -0.05 + Math.cos(t * Math.PI * 2.1) * 0.015,
+      ]);
+    }
+    addTube(THREE, crispri, guide, colors.guide, 0.011);
+    addNucleotideBeads(guide, colors.guide, 0.012);
+
+    const scaffold = [
+      [0.02, 0.02, -0.05],
+      [0.1, 0.1, -0.08],
+      [0.18, 0.08, -0.03],
+      [0.12, 0.0, 0.01],
+      [0.05, 0.04, -0.04],
+    ];
+    addTube(THREE, crispri, scaffold, colors.guide, 0.009);
+    addNucleotideBeads(scaffold, colors.guide, 0.011);
+
+    addProteinLobe("REC lobe", colors.cas9Rec, new THREE.Vector3(-0.16, 0.12, -0.02), [1.55, 1.05, 0.9], [0.1, -0.25, 0.08]);
+    addProteinLobe("NUC lobe", colors.cas9Nuc, new THREE.Vector3(0.12, 0.12, 0.02), [1.3, 0.95, 0.88], [-0.08, 0.25, -0.08]);
+    addProteinLobe("HNH", colors.cas9Hnh, new THREE.Vector3(0.02, 0.2, -0.1), [0.72, 0.56, 0.48], [0.1, 0.35, 0.2]);
+    addProteinLobe("RuvC", colors.cas9Ruvc, new THREE.Vector3(-0.04, 0.02, 0.1), [0.8, 0.5, 0.52], [-0.2, -0.2, 0.1]);
+    addProteinLobe("PAM-interacting", colors.cas9Pam, new THREE.Vector3(0.28, 0.04, 0.0), [0.6, 0.45, 0.42], [0.1, -0.35, 0]);
+
+    addAlphaHelix(new THREE.Vector3(-0.17, 0.16, 0.1), 0.018, 0.22, colors.proteinDetail, [0.25, 0.35, 0.65]);
+    addAlphaHelix(new THREE.Vector3(0.12, 0.17, -0.1), 0.014, 0.2, colors.proteinDetail, [-0.3, -0.15, -0.55]);
+    addAlphaHelix(new THREE.Vector3(0.0, 0.08, 0.0), 0.012, 0.28, colors.bridge, [0.16, 0.08, 0.1]);
+
+    const contactPoints = [
+      [-0.2, 0.03, -0.04],
+      [-0.1, 0.025, -0.05],
+      [0.0, 0.018, -0.04],
+      [0.1, 0.014, -0.025],
+      [0.2, 0.0, -0.01],
+    ];
+    contactPoints.forEach(([x, y, z]) => {
+      addCylinderBetween(
+        THREE,
+        crispri,
+        new THREE.Vector3(x, y + 0.045, z),
+        new THREE.Vector3(x, y, z),
+        0.0035,
+        colors.bridge,
+        { transparent: true, opacity: 0.72 }
+      ).userData.baseOpacity = 0.72;
+    });
+
+    const krabTether = [
+      [0.16, 0.22, 0.03],
+      [0.22, 0.3, 0.05],
+      [0.18, 0.38, 0.02],
+      [0.1, 0.42, 0.05],
+    ];
+    addTube(THREE, crispri, krabTether, colors.krab, 0.008);
+
+    const krabCore = addProteinLobe("KRAB repressor domain", colors.krab, new THREE.Vector3(0.02, 0.45, 0.04), [0.78, 0.48, 0.44], [0.12, 0.1, -0.25]);
+    krabCore.userData.baseOpacity = 0.96;
+    addAlphaHelix(new THREE.Vector3(-0.03, 0.47, 0.08), 0.011, 0.14, colors.krabLight, [0.2, 0.35, 0.65]);
+    addAlphaHelix(new THREE.Vector3(0.05, 0.44, -0.02), 0.01, 0.13, colors.krabLight, [-0.2, -0.1, -0.55]);
+
+    const pamMarker = new THREE.Mesh(
+      new THREE.TorusGeometry(0.052, 0.006, 10, 28),
+      makeMaterial(THREE, colors.target, { transparent: true, opacity: 0.9 })
     );
+    pamMarker.position.set(0.3, -0.04, 0);
+    pamMarker.rotation.x = Math.PI / 2;
+    pamMarker.userData.baseOpacity = 0.9;
+    crispri.add(pamMarker);
 
     const targetMarker = new THREE.Mesh(
-      new THREE.TorusGeometry(0.12, 0.012, 12, 36),
+      new THREE.TorusGeometry(0.2, 0.008, 12, 42),
       makeMaterial(THREE, colors.target, { transparent: true, opacity: 0.88 })
     );
     targetMarker.rotation.x = Math.PI / 2;
@@ -367,7 +465,7 @@
 
     crispri.position.set(0.27, -0.04, 0.31);
     crispri.rotation.set(0.05, -0.46, 0.18);
-    crispri.scale.setScalar(0.18);
+    crispri.scale.setScalar(0.26);
     group.add(crispri);
     return crispri;
   }
@@ -462,7 +560,15 @@
       nucleus: "#7fc7df",
       guide: "#3b9467",
       cas9: "#2f6fbd",
+      cas9Rec: "#3f84d8",
+      cas9Nuc: "#2b6bb8",
+      cas9Hnh: "#55a7e3",
+      cas9Ruvc: "#5f7ccf",
+      cas9Pam: "#255c9f",
+      proteinDetail: "#dbeafe",
+      bridge: "#d9b95b",
       krab: "#7d62b8",
+      krabLight: "#c0a6e8",
       target: "#c85c5c",
       rna: "#3b9467",
       readout: "#d39b2c",
@@ -576,7 +682,7 @@
         label: "CRISPRi complex",
         text: "An sgRNA guides dCas9-KRAB onto a target DNA segment, where the repressor blocks transcription without cutting the DNA.",
         target: new THREE.Vector3(0.27, -0.04, 0.31),
-        distance: 0.3,
+        distance: 0.46,
       },
       readout: {
         label: "RNA readout",
