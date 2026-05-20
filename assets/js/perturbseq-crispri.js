@@ -239,6 +239,29 @@
   function addSingleNucleosomeDetail(THREE, group, colors) {
     const detail = new THREE.Group();
 
+    function addHistoneH1(position, rotation) {
+      const h1 = new THREE.Group();
+      const material = makeMaterial(THREE, colors.histoneH1);
+      const globular = new THREE.Mesh(new THREE.SphereGeometry(0.055, 18, 12), material);
+      globular.scale.set(1.1, 0.72, 0.62);
+      h1.add(globular);
+
+      const tailA = new THREE.Mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.18, 10), material);
+      tailA.position.set(-0.055, -0.02, 0);
+      tailA.rotation.z = 0.9;
+      h1.add(tailA);
+
+      const tailB = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.16, 10), material);
+      tailB.position.set(0.06, 0.01, 0.005);
+      tailB.rotation.z = -0.75;
+      h1.add(tailB);
+
+      h1.position.copy(position);
+      h1.rotation.set(rotation[0], rotation[1], rotation[2]);
+      detail.add(h1);
+      return h1;
+    }
+
     function addContinuousDoubleHelix() {
       const centerline = [];
       const strandA = [];
@@ -302,6 +325,8 @@
 
     addHistoneOctamer(THREE, detail, new THREE.Vector3(-0.34, 0, 0), 0.62, colors);
     addHistoneOctamer(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), 0.62, colors);
+    addHistoneH1(new THREE.Vector3(-0.34, -0.16, 0.08), [0.4, -0.2, 0.2]);
+    addHistoneH1(new THREE.Vector3(0.72, -0.14, 0.1), [0.35, 0.25, -0.15]);
     addContinuousDoubleHelix();
 
     detail.position.set(0.04, 0.14, 0.28);
@@ -692,6 +717,7 @@
       histoneB: "#9a77d2",
       histoneC: "#6b8ac9",
       histoneD: "#b57cb6",
+      histoneH1: "#e0a15a",
       nucleus: "#7fc7df",
       guide: "#f2b84b",
       cas9: "#2f6fbd",
@@ -808,7 +834,7 @@
       },
       nucleosome: {
         label: "Connected nucleosomes",
-        text: "Two nucleosomes are shown on one continuous DNA molecule: double-helix DNA wraps around each histone octamer and continues through linker DNA between them.",
+        text: "Two nucleosomes are shown on one continuous DNA molecule: double-helix DNA wraps around each histone octamer, with histone H1 at the DNA entry-exit region, and continues through linker DNA between them.",
         target: new THREE.Vector3(0.04, -0.18, 0.28),
         distance: 1.8,
       },
