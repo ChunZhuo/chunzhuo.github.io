@@ -258,7 +258,7 @@
       }
 
       function addWrap(center, startTheta, turns, steps) {
-        const width = 0.42;
+        const width = 0.34;
         const radius = 0.16;
         for (let i = 0; i <= steps; i++) {
           const t = i / steps;
@@ -275,10 +275,10 @@
 
       const firstCenter = new THREE.Vector3(-0.34, 0, 0);
       const secondCenter = new THREE.Vector3(0.72, 0.02, 0.02);
-      const firstWrapStart = new THREE.Vector3(-0.55, 0.02, -0.16);
-      const firstWrapEnd = new THREE.Vector3(-0.13, -0.04, 0.15);
-      const secondWrapStart = new THREE.Vector3(0.51, 0.04, -0.14);
-      const secondWrapEnd = new THREE.Vector3(0.93, -0.02, 0.17);
+      const firstWrapStart = new THREE.Vector3(-0.51, 0.02, -0.16);
+      const firstWrapEnd = new THREE.Vector3(-0.17, -0.04, 0.15);
+      const secondWrapStart = new THREE.Vector3(0.55, 0.04, -0.14);
+      const secondWrapEnd = new THREE.Vector3(0.89, -0.02, 0.17);
 
       addLine(new THREE.Vector3(-1.32, 0.02, -0.03), firstWrapStart, 32);
       addWrap(firstCenter, -Math.PI / 2 + 0.12, 1.52, 96);
@@ -300,8 +300,8 @@
       addTube(THREE, detail, strandB, colors.dnaWhite, 0.01);
     }
 
-    addHistoneOctamer(THREE, detail, new THREE.Vector3(-0.34, 0, 0), 0.42, colors);
-    addHistoneOctamer(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), 0.42, colors);
+    addHistoneOctamer(THREE, detail, new THREE.Vector3(-0.34, 0, 0), 0.62, colors);
+    addHistoneOctamer(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), 0.62, colors);
     addContinuousDoubleHelix();
 
     detail.position.set(0.04, 0.14, 0.28);
