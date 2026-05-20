@@ -262,7 +262,7 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
        Imagemagick: Generated 108 file(s)
          AutoPages: Disabled/Not configured in site.config.
         Pagination: Complete, processed 1 pagination page(s)
-[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260520-3453-6e7giz.ipynb to html
+[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260520-3610-ubvnjn.ipynb to html
 /opt/hostedtoolcache/Python/3.13.13/x64/lib/python3.13/site-packages/nbconvert/filters/highlight.py:71: UserWarning: IPython3 lexer unavailable, falling back on Python 3
   return _pygments_highlight(
 [33m          Conflict: The following destination is shared by multiple files.[0m
