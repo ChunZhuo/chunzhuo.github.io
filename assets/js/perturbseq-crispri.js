@@ -238,81 +238,35 @@
 
   function addSingleNucleosomeDetail(THREE, group, colors) {
     const detail = new THREE.Group();
-    addNucleosome(THREE, detail, new THREE.Vector3(0, 0, 0), new THREE.Euler(0.05, -0.4, 0.2), 0.45, colors);
-    addTube(
-      THREE,
-      detail,
-      [
-        [-0.3, -0.02, -0.06],
-        [-0.22, 0.03, -0.02],
-        [-0.14, 0.02, 0.02],
-      ],
-      colors.dnaWhite,
-      0.01
-    );
-    addTube(
-      THREE,
-      detail,
-      [
-        [0.14, -0.01, 0.02],
-        [0.22, -0.04, 0.06],
-        [0.3, -0.02, 0.08],
-      ],
-      colors.dnaBlue,
-      0.01
-    );
-    detail.position.set(0.18, -0.04, 0.28);
+
+    function addLinkerDoubleHelix(startX, endX, y, z, turns) {
+      const strandA = [];
+      const strandB = [];
+      const steps = 56;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const x = startX + (endX - startX) * t;
+        const phase = t * Math.PI * 2 * turns;
+        const first = new THREE.Vector3(x, y + Math.cos(phase) * 0.028, z + Math.sin(phase) * 0.028);
+        const second = new THREE.Vector3(x, y + Math.cos(phase + Math.PI) * 0.028, z + Math.sin(phase + Math.PI) * 0.028);
+        strandA.push([first.x, first.y, first.z]);
+        strandB.push([second.x, second.y, second.z]);
+        if (i % 4 === 0) addCylinderBetween(THREE, detail, first, second, 0.0035, "#bcc9d8");
+      }
+      addTube(THREE, detail, strandA, colors.dnaBlue, 0.011);
+      addTube(THREE, detail, strandB, colors.dnaWhite, 0.009);
+    }
+
+    addLinkerDoubleHelix(-1.18, -0.54, 0.02, -0.02, 2.2);
+    addNucleosome(THREE, detail, new THREE.Vector3(-0.34, 0, 0), new THREE.Euler(0.08, -0.45, 0.16), 0.42, colors);
+    addLinkerDoubleHelix(-0.12, 0.48, 0.02, 0.02, 2.1);
+    addNucleosome(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), new THREE.Euler(0.04, 0.36, -0.18), 0.42, colors);
+    addLinkerDoubleHelix(0.94, 1.48, 0.03, 0.0, 1.8);
+
+    detail.position.set(0.04, 0.14, 0.28);
+    detail.scale.setScalar(0.62);
     group.add(detail);
     return detail;
-  }
-
-  function addDoubleHelixDetail(THREE, group, colors) {
-    const helix = new THREE.Group();
-    const strandA = [];
-    const strandB = [];
-    const basePairs = [
-      ["A", "T"],
-      ["C", "G"],
-      ["G", "C"],
-      ["T", "A"],
-      ["A", "T"],
-      ["G", "C"],
-      ["C", "G"],
-      ["T", "A"],
-      ["G", "C"],
-      ["A", "T"],
-      ["C", "G"],
-      ["G", "C"],
-      ["T", "A"],
-      ["A", "T"],
-    ];
-    const baseColors = { A: "#4e8bd6", T: "#d9b95b", C: "#49a978", G: "#bd6a9a" };
-
-    basePairs.forEach((pair, index) => {
-      const t = index / (basePairs.length - 1);
-      const x = -0.9 + t * 1.8;
-      const phase = index * 0.82;
-      const first = new THREE.Vector3(x, Math.cos(phase) * 0.22, Math.sin(phase) * 0.22);
-      const second = new THREE.Vector3(x, Math.cos(phase + Math.PI) * 0.22, Math.sin(phase + Math.PI) * 0.22);
-      strandA.push([first.x, first.y, first.z]);
-      strandB.push([second.x, second.y, second.z]);
-      addCylinderBetween(THREE, helix, first, second, 0.012, "#bcc9d8");
-
-      [first, second].forEach((point, side) => {
-        const base = pair[side];
-        const baseMesh = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 10), makeMaterial(THREE, baseColors[base]));
-        baseMesh.position.copy(point.clone().lerp(side === 0 ? second : first, 0.38));
-        helix.add(baseMesh);
-      });
-    });
-
-    addTube(THREE, helix, strandA, colors.dnaBlue, 0.024);
-    addTube(THREE, helix, strandB, colors.dnaWhite, 0.02);
-    helix.position.set(0.27, -0.04, 0.31);
-    helix.rotation.set(0.05, -0.46, 0.18);
-    helix.scale.setScalar(0.12);
-    group.add(helix);
-    return helix;
   }
 
   function addCrispriComplex(THREE, group, colors) {
@@ -748,10 +702,9 @@
     const loopGroup = new THREE.Group();
     const fiberGroup = new THREE.Group();
     const nucleosomeGroup = new THREE.Group();
-    const helixGroup = new THREE.Group();
     const crispriGroup = new THREE.Group();
     const readoutGroup = new THREE.Group();
-    world.add(nucleusGroup, territoryGroup, loopGroup, fiberGroup, nucleosomeGroup, helixGroup, crispriGroup, readoutGroup);
+    world.add(nucleusGroup, territoryGroup, loopGroup, fiberGroup, nucleosomeGroup, crispriGroup, readoutGroup);
 
     const nucleus = new THREE.Mesh(
       new THREE.SphereGeometry(2.35, 72, 42),
@@ -778,7 +731,6 @@
     const loops = addLoopDomain(THREE, loopGroup, colors);
     const fiber = addBeadsOnStringFiber(THREE, fiberGroup, colors);
     const nucleosome = addSingleNucleosomeDetail(THREE, nucleosomeGroup, colors);
-    const helix = addDoubleHelixDetail(THREE, helixGroup, colors);
     const crispri = addCrispriComplex(THREE, crispriGroup, colors);
     const readout = addRnaReadout(THREE, readoutGroup, colors);
 
@@ -787,7 +739,6 @@
     addLabel(THREE, labels, "loop domains", new THREE.Vector3(-0.9, 0.98, 0.74), "loops");
     addLabel(THREE, labels, "beads-on-a-string", new THREE.Vector3(0.02, -0.82, 0.82), "fiber");
     addLabel(THREE, labels, "nucleosome", new THREE.Vector3(0.62, 0.24, 1.12), "nucleosome");
-    addLabel(THREE, labels, "DNA double helix", new THREE.Vector3(1.1, -0.98, 1.1), "helix");
 
     const focuses = {
       nucleus: {
@@ -815,16 +766,10 @@
         distance: 1.55,
       },
       nucleosome: {
-        label: "Single nucleosome",
-        text: "The view zooms into one bead from the fiber, showing the same nucleosome with DNA wrapped around the histone octamer.",
-        target: new THREE.Vector3(0.18, -0.04, 0.28),
-        distance: 0.8,
-      },
-      helix: {
-        label: "DNA double helix",
-        text: "At the finest scale, the wrapped DNA at the nucleosome resolves into a double helix with visible base pairs.",
-        target: new THREE.Vector3(0.27, -0.04, 0.31),
-        distance: 0.25,
+        label: "Connected nucleosomes",
+        text: "Two nucleosomes are shown on one continuous DNA molecule: double-helix DNA wraps around each histone octamer and continues through linker DNA between them.",
+        target: new THREE.Vector3(0.04, -0.18, 0.28),
+        distance: 1.8,
       },
       crispri: {
         label: "CRISPRi complex",
@@ -840,7 +785,7 @@
       },
     };
 
-    const stageOrder = ["nucleus", "territory", "loops", "fiber", "nucleosome", "helix", "crispri", "readout"];
+    const stageOrder = ["nucleus", "territory", "loops", "fiber", "nucleosome", "crispri", "readout"];
     const state = {
       target: focuses.nucleus.target.clone(),
       cameraTarget: focuses.nucleus.target.clone(),
@@ -868,14 +813,13 @@
 
     function stageOpacityVector(name) {
       const opacityByStage = {
-        nucleus: [1, 0, 0, 0, 0, 0, 0, 0],
-        territory: [0, 1, 0, 0, 0, 0, 0, 0],
-        loops: [0, 0, 1, 0, 0, 0, 0, 0],
-        fiber: [0, 0, 0, 1, 0, 0, 0, 0],
-        nucleosome: [0, 0, 0, 0, 1, 0, 0, 0],
-        helix: [0, 0, 0, 0, 0, 1, 0, 0],
-        crispri: [0, 0, 0, 0, 0, 0, 1, 0],
-        readout: [0, 0, 0, 0, 0, 0, 0, 1],
+        nucleus: [1, 0, 0, 0, 0, 0, 0],
+        territory: [0, 1, 0, 0, 0, 0, 0],
+        loops: [0, 0, 1, 0, 0, 0, 0],
+        fiber: [0, 0, 0, 1, 0, 0, 0],
+        nucleosome: [0, 0, 0, 0, 1, 0, 0],
+        crispri: [0, 0, 0, 0, 0, 1, 0],
+        readout: [0, 0, 0, 0, 0, 0, 1],
       };
       return opacityByStage[name] || opacityByStage.nucleus;
     }
@@ -891,9 +835,8 @@
       setGroupOpacity(loopGroup, opacities[2]);
       setGroupOpacity(fiberGroup, opacities[3]);
       setGroupOpacity(nucleosomeGroup, opacities[4]);
-      setGroupOpacity(helixGroup, opacities[5]);
-      setGroupOpacity(crispriGroup, opacities[6]);
-      setGroupOpacity(readoutGroup, opacities[7]);
+      setGroupOpacity(crispriGroup, opacities[5]);
+      setGroupOpacity(readoutGroup, opacities[6]);
       labels.children.forEach((label) => {
         label.visible = camera.aspect >= 0.78 && index < 4 && label.userData.stage === state.focus;
       });
@@ -950,7 +893,6 @@
       loops.scale.y = 1 + Math.sin(state.time * 0.9) * 0.025;
       fiber.rotation.y = Math.sin(state.time * 0.6) * 0.08;
       nucleosome.rotation.y = Math.sin(state.time * 0.48) * 0.12;
-      helix.rotation.x = Math.sin(state.time * 0.55) * 0.1;
       crispri.rotation.z = 0.12 + Math.sin(state.time * 0.35) * 0.012;
       readout.rotation.y = Math.sin(state.time * 0.28) * 0.04;
 
