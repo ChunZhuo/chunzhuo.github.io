@@ -239,29 +239,68 @@
   function addSingleNucleosomeDetail(THREE, group, colors) {
     const detail = new THREE.Group();
 
-    function addLinkerDoubleHelix(startX, endX, y, z, turns) {
+    function addContinuousDoubleHelix() {
+      const centerline = [];
       const strandA = [];
       const strandB = [];
-      const steps = 56;
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        const x = startX + (endX - startX) * t;
-        const phase = t * Math.PI * 2 * turns;
-        const first = new THREE.Vector3(x, y + Math.cos(phase) * 0.028, z + Math.sin(phase) * 0.028);
-        const second = new THREE.Vector3(x, y + Math.cos(phase + Math.PI) * 0.028, z + Math.sin(phase + Math.PI) * 0.028);
+
+      function pushPoint(point) {
+        const last = centerline[centerline.length - 1];
+        if (last && last.distanceTo(point) < 0.001) return;
+        centerline.push(point);
+      }
+
+      function addLine(start, end, steps) {
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          pushPoint(new THREE.Vector3().lerpVectors(start, end, t));
+        }
+      }
+
+      function addWrap(centerX, startTheta, turns, steps) {
+        const width = 0.5;
+        const radius = 0.24;
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          const theta = startTheta + t * Math.PI * 2 * turns;
+          pushPoint(
+            new THREE.Vector3(
+              centerX - width / 2 + t * width,
+              Math.cos(theta) * radius,
+              Math.sin(theta) * radius
+            )
+          );
+        }
+      }
+
+      const firstWrapStart = new THREE.Vector3(-0.61, 0.03, -0.24);
+      const firstWrapEnd = new THREE.Vector3(-0.07, 0.03, 0.24);
+      const secondWrapStart = new THREE.Vector3(0.47, 0.03, -0.24);
+      const secondWrapEnd = new THREE.Vector3(1.01, 0.03, 0.24);
+
+      addLine(new THREE.Vector3(-1.32, 0.02, -0.03), firstWrapStart, 32);
+      addWrap(-0.34, -Math.PI / 2 + 0.12, 1.52, 96);
+      addLine(firstWrapEnd, secondWrapStart, 42);
+      addWrap(0.72, -Math.PI / 2 + 0.12, 1.52, 96);
+      addLine(secondWrapEnd, new THREE.Vector3(1.48, 0.02, 0.04), 26);
+
+      centerline.forEach((point, index) => {
+        const phase = index * 0.74;
+        const offset = new THREE.Vector3(0, Math.cos(phase) * 0.026, Math.sin(phase) * 0.026);
+        const first = point.clone().add(offset);
+        const second = point.clone().sub(offset);
         strandA.push([first.x, first.y, first.z]);
         strandB.push([second.x, second.y, second.z]);
-        if (i % 4 === 0) addCylinderBetween(THREE, detail, first, second, 0.0035, "#bcc9d8");
-      }
-      addTube(THREE, detail, strandA, colors.dnaBlue, 0.011);
-      addTube(THREE, detail, strandB, colors.dnaWhite, 0.009);
+        if (index % 7 === 0) addCylinderBetween(THREE, detail, first, second, 0.0032, "#bcc9d8");
+      });
+
+      addTube(THREE, detail, strandA, colors.dnaBlue, 0.012);
+      addTube(THREE, detail, strandB, colors.dnaWhite, 0.01);
     }
 
-    addLinkerDoubleHelix(-1.18, -0.54, 0.02, -0.02, 2.2);
-    addNucleosome(THREE, detail, new THREE.Vector3(-0.34, 0, 0), new THREE.Euler(0.08, -0.45, 0.16), 0.42, colors);
-    addLinkerDoubleHelix(-0.12, 0.48, 0.02, 0.02, 2.1);
-    addNucleosome(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), new THREE.Euler(0.04, 0.36, -0.18), 0.42, colors);
-    addLinkerDoubleHelix(0.94, 1.48, 0.03, 0.0, 1.8);
+    addHistoneOctamer(THREE, detail, new THREE.Vector3(-0.34, 0, 0), 0.42, colors);
+    addHistoneOctamer(THREE, detail, new THREE.Vector3(0.72, 0.02, 0.02), 0.42, colors);
+    addContinuousDoubleHelix();
 
     detail.position.set(0.04, 0.14, 0.28);
     detail.scale.setScalar(0.62);
