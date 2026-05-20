@@ -257,31 +257,33 @@
         }
       }
 
-      function addWrap(centerX, startTheta, turns, steps) {
-        const width = 0.5;
-        const radius = 0.24;
+      function addWrap(center, startTheta, turns, steps) {
+        const width = 0.42;
+        const radius = 0.16;
         for (let i = 0; i <= steps; i++) {
           const t = i / steps;
           const theta = startTheta + t * Math.PI * 2 * turns;
           pushPoint(
             new THREE.Vector3(
-              centerX - width / 2 + t * width,
-              Math.cos(theta) * radius,
-              Math.sin(theta) * radius
+              center.x - width / 2 + t * width,
+              center.y + Math.cos(theta) * radius,
+              center.z + Math.sin(theta) * radius
             )
           );
         }
       }
 
-      const firstWrapStart = new THREE.Vector3(-0.61, 0.03, -0.24);
-      const firstWrapEnd = new THREE.Vector3(-0.07, 0.03, 0.24);
-      const secondWrapStart = new THREE.Vector3(0.47, 0.03, -0.24);
-      const secondWrapEnd = new THREE.Vector3(1.01, 0.03, 0.24);
+      const firstCenter = new THREE.Vector3(-0.34, 0, 0);
+      const secondCenter = new THREE.Vector3(0.72, 0.02, 0.02);
+      const firstWrapStart = new THREE.Vector3(-0.55, 0.02, -0.16);
+      const firstWrapEnd = new THREE.Vector3(-0.13, -0.04, 0.15);
+      const secondWrapStart = new THREE.Vector3(0.51, 0.04, -0.14);
+      const secondWrapEnd = new THREE.Vector3(0.93, -0.02, 0.17);
 
       addLine(new THREE.Vector3(-1.32, 0.02, -0.03), firstWrapStart, 32);
-      addWrap(-0.34, -Math.PI / 2 + 0.12, 1.52, 96);
+      addWrap(firstCenter, -Math.PI / 2 + 0.12, 1.52, 96);
       addLine(firstWrapEnd, secondWrapStart, 42);
-      addWrap(0.72, -Math.PI / 2 + 0.12, 1.52, 96);
+      addWrap(secondCenter, -Math.PI / 2 + 0.12, 1.52, 96);
       addLine(secondWrapEnd, new THREE.Vector3(1.48, 0.02, 0.04), 26);
 
       centerline.forEach((point, index) => {
