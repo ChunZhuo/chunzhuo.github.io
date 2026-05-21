@@ -266,6 +266,34 @@
       const centerline = [];
       const strandA = [];
       const strandB = [];
+      const basePairs = [];
+
+      function addHydrogenBonds(first, second, index) {
+        const axis = new THREE.Vector3().subVectors(second, first);
+        const length = axis.length();
+        if (length === 0) return;
+
+        const direction = axis.clone().normalize();
+        const middle = new THREE.Vector3().addVectors(first, second).multiplyScalar(0.5);
+        const bondCount = index % 2 === 0 ? 2 : 3;
+        const spacing = 0.014;
+        const normal = new THREE.Vector3(direction.z, 0, -direction.x).normalize();
+        if (normal.lengthSq() === 0) normal.set(1, 0, 0);
+
+        for (let bondIndex = 0; bondIndex < bondCount; bondIndex++) {
+          const shift = (bondIndex - (bondCount - 1) / 2) * spacing;
+          const bondMiddle = middle.clone().add(normal.clone().multiplyScalar(shift));
+          const halfLength = length * 0.46;
+          const start = bondMiddle.clone().add(direction.clone().multiplyScalar(-halfLength));
+          const end = bondMiddle.clone().add(direction.clone().multiplyScalar(halfLength));
+          addCylinderBetween(THREE, detail, start, end, 0.0068, colors.hydrogenBond, {
+            transparent: true,
+            opacity: 1,
+            emissive: colors.hydrogenBond,
+            emissiveIntensity: 0.45,
+          });
+        }
+      }
 
       function pushPoint(point) {
         const last = centerline[centerline.length - 1];
@@ -311,16 +339,17 @@
 
       centerline.forEach((point, index) => {
         const phase = index * 0.74;
-        const offset = new THREE.Vector3(0, Math.cos(phase) * 0.026, Math.sin(phase) * 0.026);
+        const offset = new THREE.Vector3(0, Math.cos(phase) * 0.038, Math.sin(phase) * 0.038);
         const first = point.clone().add(offset);
         const second = point.clone().sub(offset);
         strandA.push([first.x, first.y, first.z]);
         strandB.push([second.x, second.y, second.z]);
-        if (index % 7 === 0) addCylinderBetween(THREE, detail, first, second, 0.0032, "#bcc9d8");
+        if (index % 4 === 0) basePairs.push([first, second, index]);
       });
 
       addTube(THREE, detail, strandA, colors.dnaBlue, 0.012);
       addTube(THREE, detail, strandB, colors.dnaWhite, 0.01);
+      basePairs.forEach(([first, second, index]) => addHydrogenBonds(first, second, index));
     }
 
     addHistoneOctamer(THREE, detail, new THREE.Vector3(-0.34, 0, 0), 0.62, colors);
@@ -718,6 +747,7 @@
       histoneC: "#6b8ac9",
       histoneD: "#b57cb6",
       histoneH1: "#e0a15a",
+      hydrogenBond: "#f4d97a",
       nucleus: "#7fc7df",
       guide: "#f2b84b",
       cas9: "#2f6fbd",
