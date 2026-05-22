@@ -262,6 +262,123 @@
       return h1;
     }
 
+    function addNucleosomeDcas9Krab() {
+      const complex = new THREE.Group();
+      complex.position.set(0.22, 0.08, 0.13);
+      complex.rotation.set(0.12, -0.28, 0.08);
+
+      function addProteinBlob(position, radius, color, scale) {
+        const blob = new THREE.Mesh(new THREE.SphereGeometry(radius, 24, 16), makeMaterial(THREE, color));
+        blob.position.copy(position);
+        blob.scale.set(scale[0], scale[1], scale[2]);
+        complex.add(blob);
+        return blob;
+      }
+
+      addProteinBlob(new THREE.Vector3(-0.11, 0.02, 0.02), 0.095, colors.cas9Rec, [1.28, 0.72, 0.9]);
+      addProteinBlob(new THREE.Vector3(0.09, -0.02, 0.02), 0.105, colors.cas9Nuc, [1.22, 0.78, 0.92]);
+      addProteinBlob(new THREE.Vector3(-0.02, 0.09, -0.035), 0.058, colors.cas9Hnh, [1.15, 0.72, 0.8]);
+      addProteinBlob(new THREE.Vector3(0.15, 0.055, -0.045), 0.05, colors.cas9Ruvc, [1.08, 0.72, 0.82]);
+
+      addTube(
+        THREE,
+        complex,
+        [
+          [-0.18, 0.03, 0.08],
+          [-0.06, 0.08, 0.07],
+          [0.09, 0.05, 0.06],
+          [0.22, -0.02, 0.04],
+        ],
+        colors.proteinDetail,
+        0.01
+      );
+      addTube(
+        THREE,
+        complex,
+        [
+          [-0.14, -0.08, -0.04],
+          [-0.02, -0.1, -0.02],
+          [0.13, -0.07, 0],
+          [0.24, -0.01, 0.02],
+        ],
+        colors.proteinDetail,
+        0.01
+      );
+
+      const targetStart = new THREE.Vector3(-0.21, -0.115, -0.018);
+      const targetEnd = new THREE.Vector3(0.23, -0.115, -0.018);
+      addCylinderBetween(THREE, complex, targetStart, targetEnd, 0.011, colors.target, {
+        transparent: true,
+        opacity: 0.78,
+        emissive: colors.target,
+        emissiveIntensity: 0.28,
+      });
+
+      const pam = new THREE.Mesh(
+        new THREE.BoxGeometry(0.08, 0.035, 0.035),
+        makeMaterial(THREE, colors.pam, { emissive: colors.pam, emissiveIntensity: 0.32 })
+      );
+      pam.position.set(0.28, -0.115, -0.018);
+      complex.add(pam);
+
+      addTube(
+        THREE,
+        complex,
+        [
+          [-0.19, -0.04, 0.06],
+          [-0.11, -0.015, 0.09],
+          [0.01, -0.035, 0.08],
+          [0.12, -0.075, 0.035],
+          [0.21, -0.108, -0.004],
+        ],
+        colors.guide,
+        0.009
+      );
+
+      addCylinderBetween(
+        THREE,
+        complex,
+        new THREE.Vector3(-0.2, -0.12, -0.035),
+        new THREE.Vector3(0.18, -0.12, -0.035),
+        0.0045,
+        colors.guide,
+        { transparent: true, opacity: 0.9, emissive: colors.guide, emissiveIntensity: 0.22 }
+      );
+
+      addTube(
+        THREE,
+        complex,
+        [
+          [-0.12, 0.1, 0.08],
+          [-0.1, 0.18, 0.13],
+          [-0.04, 0.25, 0.14],
+        ],
+        colors.krab,
+        0.008
+      );
+
+      const krab = new THREE.Group();
+      krab.position.set(-0.02, 0.31, 0.14);
+      complex.add(krab);
+      const krabCore = new THREE.Mesh(new THREE.SphereGeometry(0.06, 22, 14), makeMaterial(THREE, colors.krab));
+      krabCore.scale.set(1.25, 0.72, 0.72);
+      krab.add(krabCore);
+      addTube(THREE, krab, [[-0.06, 0.02, 0.035], [-0.015, 0.045, 0.065], [0.04, 0.015, 0.055]], colors.krabLight, 0.007);
+      addTube(THREE, krab, [[-0.035, -0.035, -0.045], [0.01, -0.05, -0.065], [0.055, -0.018, -0.04]], colors.krabLight, 0.006);
+
+      const noCut = new THREE.Mesh(
+        new THREE.TorusGeometry(0.065, 0.006, 8, 32),
+        makeMaterial(THREE, "#ffffff", { emissive: "#ffffff", emissiveIntensity: 0.25 })
+      );
+      noCut.position.set(0.18, 0.03, 0.115);
+      noCut.rotation.set(Math.PI / 2, 0.15, 0);
+      complex.add(noCut);
+
+      complex.scale.setScalar(0.82);
+      detail.add(complex);
+      return complex;
+    }
+
     function addContinuousDoubleHelix() {
       const centerline = [];
       const strandA = [];
@@ -366,6 +483,7 @@
     addHistoneH1(new THREE.Vector3(-0.34, -0.16, 0.08), [0.4, -0.2, 0.2]);
     addHistoneH1(new THREE.Vector3(0.72, -0.14, 0.1), [0.35, 0.25, -0.15]);
     addContinuousDoubleHelix();
+    addNucleosomeDcas9Krab();
 
     detail.position.set(0.04, 0.14, 0.28);
     detail.scale.setScalar(0.62);
@@ -873,7 +991,7 @@
       },
       nucleosome: {
         label: "Connected nucleosomes",
-        text: "Two nucleosomes are shown on one continuous DNA molecule: double-helix DNA wraps around each histone octamer, with histone H1 at the DNA entry-exit region, and continues through linker DNA between them.",
+        text: "Two nucleosomes are shown on one continuous DNA molecule. A dCas9-KRAB complex clamps onto a linker-DNA target with sgRNA pairing, while the DNA remains uncut.",
         target: new THREE.Vector3(0.04, -0.18, 0.28),
         distance: 1.8,
       },
