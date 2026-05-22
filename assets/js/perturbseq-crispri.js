@@ -264,8 +264,8 @@
 
     function addNucleosomeDcas9Krab() {
       const complex = new THREE.Group();
-      complex.position.set(0.22, 0.08, 0.13);
-      complex.rotation.set(0.12, -0.28, 0.08);
+      complex.position.set(0.22, 0.02, 0.04);
+      complex.rotation.set(0.08, -0.22, 0.06);
 
       function addProteinBlob(position, radius, color, scale) {
         const blob = new THREE.Mesh(new THREE.SphereGeometry(radius, 24, 16), makeMaterial(THREE, color));
@@ -305,20 +305,25 @@
         0.01
       );
 
-      const targetStart = new THREE.Vector3(-0.21, -0.115, -0.018);
-      const targetEnd = new THREE.Vector3(0.23, -0.115, -0.018);
-      addCylinderBetween(THREE, complex, targetStart, targetEnd, 0.011, colors.target, {
-        transparent: true,
-        opacity: 0.78,
-        emissive: colors.target,
-        emissiveIntensity: 0.28,
+      [
+        [-0.13, -0.045, -0.035],
+        [-0.04, -0.055, -0.03],
+        [0.05, -0.06, -0.025],
+        [0.14, -0.055, -0.018],
+      ].forEach(([x, y, z]) => {
+        const targetMark = new THREE.Mesh(
+          new THREE.SphereGeometry(0.017, 14, 10),
+          makeMaterial(THREE, colors.target, { emissive: colors.target, emissiveIntensity: 0.35 })
+        );
+        targetMark.position.set(x, y, z);
+        complex.add(targetMark);
       });
 
       const pam = new THREE.Mesh(
-        new THREE.BoxGeometry(0.08, 0.035, 0.035),
+        new THREE.SphereGeometry(0.026, 16, 10),
         makeMaterial(THREE, colors.pam, { emissive: colors.pam, emissiveIntensity: 0.32 })
       );
-      pam.position.set(0.28, -0.115, -0.018);
+      pam.position.set(0.22, -0.055, -0.015);
       complex.add(pam);
 
       addTube(
@@ -328,8 +333,8 @@
           [-0.19, -0.04, 0.06],
           [-0.11, -0.015, 0.09],
           [0.01, -0.035, 0.08],
-          [0.12, -0.075, 0.035],
-          [0.21, -0.108, -0.004],
+          [0.12, -0.066, 0.025],
+          [0.2, -0.055, -0.006],
         ],
         colors.guide,
         0.009
@@ -338,12 +343,15 @@
       addCylinderBetween(
         THREE,
         complex,
-        new THREE.Vector3(-0.2, -0.12, -0.035),
-        new THREE.Vector3(0.18, -0.12, -0.035),
+        new THREE.Vector3(-0.16, -0.058, -0.04),
+        new THREE.Vector3(0.16, -0.058, -0.02),
         0.0045,
         colors.guide,
         { transparent: true, opacity: 0.9, emissive: colors.guide, emissiveIntensity: 0.22 }
       );
+
+      addCylinderBetween(THREE, complex, new THREE.Vector3(-0.08, -0.02, 0.005), new THREE.Vector3(-0.08, -0.065, -0.028), 0.01, colors.proteinDetail);
+      addCylinderBetween(THREE, complex, new THREE.Vector3(0.1, -0.018, 0.005), new THREE.Vector3(0.1, -0.065, -0.022), 0.01, colors.proteinDetail);
 
       addTube(
         THREE,
