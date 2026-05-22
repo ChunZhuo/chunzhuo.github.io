@@ -301,10 +301,19 @@
         centerline.push(point);
       }
 
-      function addLine(start, end, steps) {
+      function addFlexibleLink(start, end, steps, amplitude, phase) {
+        const direction = new THREE.Vector3().subVectors(end, start).normalize();
+        const up = Math.abs(direction.y) > 0.82 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
+        const side = new THREE.Vector3().crossVectors(direction, up).normalize();
+        const bend = new THREE.Vector3().crossVectors(side, direction).normalize();
+
         for (let i = 0; i <= steps; i++) {
           const t = i / steps;
-          pushPoint(new THREE.Vector3().lerpVectors(start, end, t));
+          const taper = Math.sin(Math.PI * t);
+          const point = new THREE.Vector3().lerpVectors(start, end, t);
+          point.add(side.clone().multiplyScalar(Math.sin(t * Math.PI * 2 + phase) * amplitude * taper));
+          point.add(bend.clone().multiplyScalar(Math.sin(t * Math.PI * 3 + phase * 0.7) * amplitude * 0.72 * taper));
+          pushPoint(point);
         }
       }
 
@@ -331,11 +340,11 @@
       const secondWrapStart = new THREE.Vector3(0.55, 0.04, -0.14);
       const secondWrapEnd = new THREE.Vector3(0.89, -0.02, 0.17);
 
-      addLine(new THREE.Vector3(-1.32, 0.02, -0.03), firstWrapStart, 32);
+      addFlexibleLink(new THREE.Vector3(-1.32, 0.02, -0.03), firstWrapStart, 38, 0.045, 0.6);
       addWrap(firstCenter, -Math.PI / 2 + 0.12, 1.52, 96);
-      addLine(firstWrapEnd, secondWrapStart, 42);
+      addFlexibleLink(firstWrapEnd, secondWrapStart, 58, 0.062, 1.35);
       addWrap(secondCenter, -Math.PI / 2 + 0.12, 1.52, 96);
-      addLine(secondWrapEnd, new THREE.Vector3(1.48, 0.02, 0.04), 26);
+      addFlexibleLink(secondWrapEnd, new THREE.Vector3(1.48, 0.02, 0.04), 34, 0.042, 2.4);
 
       centerline.forEach((point, index) => {
         const phase = index * 0.74;
