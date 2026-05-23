@@ -312,7 +312,7 @@
         [0.14, -0.055, -0.018],
       ].forEach(([x, y, z]) => {
         const targetMark = new THREE.Mesh(
-          new THREE.SphereGeometry(0.017, 14, 10),
+          new THREE.SphereGeometry(0.012, 14, 10),
           makeMaterial(THREE, colors.target, { emissive: colors.target, emissiveIntensity: 0.35 })
         );
         targetMark.position.set(x, y, z);
@@ -333,21 +333,11 @@
           [-0.19, -0.04, 0.06],
           [-0.11, -0.015, 0.09],
           [0.01, -0.035, 0.08],
-          [0.12, -0.066, 0.025],
-          [0.2, -0.055, -0.006],
+          [0.1, -0.052, 0.04],
+          [0.19, -0.045, 0.02],
         ],
         colors.guide,
         0.009
-      );
-
-      addCylinderBetween(
-        THREE,
-        complex,
-        new THREE.Vector3(-0.16, -0.058, -0.04),
-        new THREE.Vector3(0.16, -0.058, -0.02),
-        0.0045,
-        colors.guide,
-        { transparent: true, opacity: 0.9, emissive: colors.guide, emissiveIntensity: 0.22 }
       );
 
       addCylinderBetween(THREE, complex, new THREE.Vector3(-0.08, -0.02, 0.005), new THREE.Vector3(-0.08, -0.065, -0.028), 0.01, colors.proteinDetail);
@@ -392,6 +382,7 @@
       const strandA = [];
       const strandB = [];
       const basePairs = [];
+      const guideHybrid = [];
 
       function addHydrogenBonds(first, second, index) {
         const axis = new THREE.Vector3().subVectors(second, first);
@@ -471,18 +462,34 @@
       addWrap(secondCenter, -Math.PI / 2 + 0.12, 1.52, 96);
       addFlexibleLink(secondWrapEnd, new THREE.Vector3(1.48, 0.02, 0.04), 34, 0.042, 2.4);
 
+      const rLoopStart = 148;
+      const rLoopEnd = 180;
+
       centerline.forEach((point, index) => {
         const phase = index * 0.74;
-        const offset = new THREE.Vector3(0, Math.cos(phase) * 0.038, Math.sin(phase) * 0.038);
+        const inRLoop = index >= rLoopStart && index <= rLoopEnd;
+        const rLoopT = inRLoop ? (index - rLoopStart) / (rLoopEnd - rLoopStart) : 0;
+        const bubble = inRLoop ? Math.sin(Math.PI * rLoopT) : 0;
+        const offset = new THREE.Vector3(0, Math.cos(phase) * (0.038 + bubble * 0.022), Math.sin(phase) * (0.038 + bubble * 0.022));
         const first = point.clone().add(offset);
-        const second = point.clone().sub(offset);
+        const second = point
+          .clone()
+          .sub(offset)
+          .add(new THREE.Vector3(0, bubble * 0.115, bubble * 0.09));
         strandA.push([first.x, first.y, first.z]);
         strandB.push([second.x, second.y, second.z]);
-        if (index % 4 === 0) basePairs.push([first, second, index]);
+        if (inRLoop) {
+          const guidePoint = first.clone().lerp(point, 0.32).add(new THREE.Vector3(0, -0.028 - bubble * 0.018, 0.018));
+          guideHybrid.push([guidePoint.x, guidePoint.y, guidePoint.z]);
+          if (index % 3 === 0) basePairs.push([first, guidePoint, index]);
+        } else if (index % 4 === 0) {
+          basePairs.push([first, second, index]);
+        }
       });
 
       addTube(THREE, detail, strandA, colors.dnaBlue, 0.012);
       addTube(THREE, detail, strandB, colors.dnaWhite, 0.01);
+      addTube(THREE, detail, guideHybrid, colors.guide, 0.012);
       basePairs.forEach(([first, second, index]) => addHydrogenBonds(first, second, index));
     }
 
@@ -999,7 +1006,7 @@
       },
       nucleosome: {
         label: "Connected nucleosomes",
-        text: "Two nucleosomes are shown on one continuous DNA molecule. A dCas9-KRAB complex clamps onto a linker-DNA target with sgRNA pairing, while the DNA remains uncut.",
+        text: "Two nucleosomes are shown on one continuous DNA molecule. At the dCas9-KRAB target, the linker DNA opens into an R-loop: sgRNA pairs with one DNA strand, the other strand is displaced, and the DNA remains uncut.",
         target: new THREE.Vector3(0.04, -0.18, 0.28),
         distance: 1.8,
       },
