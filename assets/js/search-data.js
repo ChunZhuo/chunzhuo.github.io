@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-single-cell-perturb-seq-crispri",
+        },{id: "post-generalized-plackett-luce-model",
+        
+          title: "Generalized Plackett-Luce Model",
+        
+        description: "A concise note on how the generalized Plackett-Luce model extends ranking models beyond complete ordered lists.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/generalized-plackett-luce-model/";
+          
+        },
+      },{id: "post-single-cell-perturb-seq-crispri",
         
           title: "Single-cell Perturb-seq CRISPRi",
         
