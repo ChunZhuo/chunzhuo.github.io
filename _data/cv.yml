@@ -38,6 +38,8 @@ cv:
         start_date: 2024-10
         summary: Designing single-cell foundation models and exploring multi-modal fusion for virtual cell modeling.
         highlights:
+          - "Designed new model architectures for modeling cell groups."
+          - "Designed new context-based model tasks for biological exploration."
           - "**Single-cell foundation model (53M / 300M / 600M / 2B):** in-context learning with observation and perturbation data; group-level cell modeling. From data preprocessing through architecture design to downstream benchmarking (based on scGPT); outperforms scGPT, Transcriptformer, and UCE."
           - "Explored scaling laws on single-cell data."
           - "Implementation in PyTorch → PyTorch Lightning; attention acceleration via FlashAttention / FlexAttention; custom loss and multi-classification heads."
