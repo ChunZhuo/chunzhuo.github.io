@@ -4,86 +4,141 @@ layout: post
 title: "Generalized Plackett-Luce Model"
 date: 2026-05-25
 post_author: Chunzhuo Zhang
-description: "A concise note on how the generalized Plackett-Luce model extends ranking models beyond complete ordered lists."
+description: "Notes on the generalized Plackett-Luce model for rank-ordered data with ties."
 tags: ["statistics", "ranking", "choice-models", "machine-learning"]
 categories: research-notes
 permalink: /blog/2026/generalized-plackett-luce-model/
 featured: false
 ---
 
-The Plackett-Luce model is a probability model for ranked choices. It is useful when the observed data are not just labels, but ordered preferences: candidate A is preferred to candidate B, item 3 is selected before item 7, or one algorithm is ranked above another by a judge.
+Generalized Plackett-Luce model (GPL) is a model for rank-ordered data. It includes the ties presented.[^1] This blog tries to illustrate such model with my own understandings.
 
-The core idea is simple. Each item has a positive worth parameter. At each rank position, the next item is selected with probability proportional to its worth among the remaining available items.
+Recently, a paper shows such model is suitable for modeling single cell transcriptomic data, due to its scalability for training virtual cell model.[^2]
 
-Suppose there are items $$1,\ldots,n$$, and item $$i$$ has worth $$w_i > 0$$. For a full ranking
+First, several notations with examples:
 
-$$
-\pi = (\pi_1, \pi_2, \ldots, \pi_n),
-$$
+## Buckets and ties
 
-the standard Plackett-Luce probability is
+A group of entities:
 
-$$
-P(\pi) =
-\prod_{r=1}^{n}
-\frac{w_{\pi_r}}{\sum_{s=r}^{n} w_{\pi_s}}.
-$$
+$$K = \{1, 2, 3, 4, 5\}$$
 
-This says: first choose the top-ranked item from all items, then choose the second-ranked item from the remaining items, and so on.
+Then let's rank them with orderings:
 
-## Why generalize it?
+$$Y = (1, 2, 4, 5, 3)$$
 
-Real ranking data are rarely clean full rankings. In practice, we often see:
+Here, $$Y$$ is the ordered version of $$K$$.
 
-- top-k rankings, where only the first few choices are observed;
-- partial rankings, where some items are unranked;
-- ties, where multiple items share the same rank;
-- grouped choices, where a set is preferred over another set;
-- repeated rankings from different users, judges, cells, or contexts;
-- covariates that change item worth across samples.
+$$S = (1,2,3,3,4)$$
 
-A generalized Plackett-Luce model keeps the sequential choice idea, but relaxes what counts as an observation and how item worth is parameterized.
+$$S$$ is the ordered set indicator. In $$S$$, there are three buckets.
 
-## Partial rankings
+<span style="color: #d63384;">How many possible buckets for $$K$$? This is the Fubini numbers:</span>
 
-If only the top $$k$$ items are observed, the likelihood stops after rank $$k$$:
+![Fubini numbers for possible bucket orders](/assets/img/posts/generalized-plackett-luce-model/fubini-numbers.png)
 
-$$
-P(\pi_1,\ldots,\pi_k) =
-\prod_{r=1}^{k}
-\frac{w_{\pi_r}}{\sum_{j \in R_r} w_j},
-$$
+See here in $$Y$$, entities 4 and 5 in $$K$$ are tied. Swapping 4 and 5 does not change the information. Then we define the tie indicator:
 
-where $$R_r$$ is the set of items still available at step $$r$$.
+$$t_{j} = I(S_{j} = S_{j+1})$$
 
-This is useful because an unranked item is not necessarily worse than every ranked item. It may simply be unobserved.
+$$T = (0,0,1,0)$$
 
-## Ties and grouped rankings
+<span style="color: #d63384;">How many possible tie patterns?</span>
 
-A common extension allows a rank position to contain a group of tied items. Instead of choosing one item at a time, the model assigns probability to selecting a subset from the remaining items. Different generalized Plackett-Luce formulations handle this differently, but the principle is the same: the model compares the total support for the selected group against the support for alternatives still available.
+$$2^{k-1}$$
 
-This is important for data such as surveys, competitions, and biological screens where multiple outcomes may be indistinguishable at the observed resolution.
+Tie patterns are fewer than bucket orders.
 
-## Covariate-dependent worth
+## Rank ordering
 
-The item worth can also depend on features:
+Weak ordering allows ties.
+
+Suppose we have $$M \le k$$ entities:
+
+- Complete: ordering of all $$M$$ entities.
+- Top-m: ordering of $$m$$ entities, where $$m < M$$.
+
+GPL model can be applied in both cases.
+
+## Plackett-Luce model
 
 $$
-w_i(x) = \exp(\beta_i^\top x).
+Pr(W_{y_{1}} < W_{y_{2}} < ... < W_{y_{k}}|\lambda)
+=
+\Pr(Y = y \mid \lambda)
+=
+\prod_{j=1}^{K-1}
+\frac{\lambda_{y_j}}
+{\sum_{\ell=j}^{K} \lambda_{y_\ell}}
+.
 $$
 
-Here, the same item can become more or less likely to be chosen depending on context $$x$$. This turns the model from a static ranking model into a conditional ranking model.
+$$\lambda$$ here represents the possibility of an entity being ranked ahead.
 
-For example, if items are genes, perturbations, models, or treatments, their ranking may depend on cell type, condition, dose, or experimental batch.
+$$
+\frac{\lambda_{y_j}}
+{\sum_{\ell=j}^{K} \lambda_{y_\ell}}
+$$
 
-## Interpretation
+represents entity $$y_i$$ being ranked ahead.
 
-The worth parameter $$w_i$$ is not an absolute score. It is relative. Multiplying all worth parameters by the same constant does not change the ranking probabilities. Usually one parameter is fixed or a normalization constraint is used for identifiability.
+$$
+W_k \overset{\text{indep.}}{\sim} \operatorname{Exp}(\lambda_k)
+$$
 
-A larger $$w_i$$ means item $$i$$ is more likely to appear earlier in a ranking, all else equal.
+## Side note: exponential distribution
 
-## Summary
+Density function for exponential distribution:
 
-The generalized Plackett-Luce model is best thought of as a flexible framework for ranking and choice data. It starts from a sequential selection process and extends it to the messy observations that appear in real applications: incomplete lists, ties, grouped preferences, repeated judges, and context-dependent item worth.
+$$f(w) = \lambda e^{-\lambda w}, w>0$$
 
-That makes it useful whenever the data answer not only "what happened?" but "what was preferred, selected, or prioritized before what?"
+Considering any time but with item $$i$$ ordering before others $$(j)$$:
+
+$$i: f_{i}(t) = \lambda_{i}e^{-\lambda_{i}t}$$
+
+$$j: P(w_{j} > t ) = e^{-\lambda t}$$
+
+$$
+\begin{aligned}
+P(i\ \text{first})
+&=
+\int_{0}^{\infty}
+\lambda_i e^{-\lambda_i t}
+\prod_{j\ne i} e^{-\lambda_j t}
+\,dt \\[1.2em]
+&=
+\int_{0}^{\infty}
+\lambda_i e^{-\left(\sum_k \lambda_k\right)t}
+\,dt \\[1.2em]
+&=
+\lambda_i
+\int_{0}^{\infty}
+e^{-\left(\sum_k \lambda_k\right)t}
+\,dt \\[1.2em]
+\int_{0}^{\infty} e^{-at}\,dt
+&=
+\frac{1}{a} \\[1.2em]
+P(i\ \text{first})
+&=
+\lambda_i
+\frac{1}{\sum_k \lambda_k}
+=
+\frac{\lambda_i}{\sum_k \lambda_k}.
+\end{aligned}
+$$
+
+## Generalized Plackett-Luce model
+
+Allowing ties in the order replaces the exponential distribution with a geometric distribution:
+
+$$
+\Pr(W_k = w) = (1-\theta_k)^{w-1}\theta_k,
+\qquad
+w \in \{1,2,3,\ldots\}
+$$
+
+## Reference
+
+[^1]: [Generalized Plackett-Luce model reference](https://arxiv.org/pdf/2212.08543)
+
+[^2]: [Application to virtual cell model training](https://cdn.prod.website-files.com/665760f5eef509d00bd3b239/69d67e9451434497a0cf5f45_main.pdf)
