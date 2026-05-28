@@ -48,7 +48,7 @@ ninja.data = [{
         
           title: "Generalized Plackett-Luce Model",
         
-        description: "A concise note on how the generalized Plackett-Luce model extends ranking models beyond complete ordered lists.",
+        description: "Notes on the generalized Plackett-Luce model for rank-ordered data with ties.",
         section: "Posts",
         handler: () => {
           

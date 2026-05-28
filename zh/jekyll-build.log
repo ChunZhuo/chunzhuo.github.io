@@ -157,6 +157,12 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-800.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-1400.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-1400.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-480.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-480.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-800.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-800.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-1400.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-1400.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/multimodality-for-biology/image1-480.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/multimodality-for-biology/image1-480.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/posts/multimodality-for-biology/image1-800.webp"
@@ -259,10 +265,10 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/universe-bg-800.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/universe-bg-1400.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/assets/img/universe-bg-1400.webp
-       Imagemagick: Generated 108 file(s)
+       Imagemagick: Generated 111 file(s)
          AutoPages: Disabled/Not configured in site.config.
         Pagination: Complete, processed 1 pagination page(s)
-[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260528-3443-tn12qc.ipynb to html
+[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20260528-3367-6zwmlk.ipynb to html
 /opt/hostedtoolcache/Python/3.13.13/x64/lib/python3.13/site-packages/nbconvert/filters/highlight.py:71: UserWarning: IPython3 lexer unavailable, falling back on Python 3
   return _pygments_highlight(
 [33m          Conflict: The following destination is shared by multiple files.[0m
@@ -412,6 +418,12 @@ Fetching external posts from Google Blog:
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-800.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-1400.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/bioai-daily-sprouts-2026-05-11/cover-1400.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-480.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-480.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-800.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-800.webp
+       Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-1400.webp"
+       Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/generalized-plackett-luce-model/fubini-numbers-1400.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/multimodality-for-biology/image1-480.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/multimodality-for-biology/image1-480.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/posts/multimodality-for-biology/image1-800.webp"
@@ -514,7 +526,7 @@ Fetching external posts from Google Blog:
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/universe-bg-800.webp
        Imagemagick: Generating image "/home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/universe-bg-1400.webp"
        Imagemagick: Adding static file /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site/zh/assets/img/universe-bg-1400.webp
-       Imagemagick: Generated 108 file(s)
+       Imagemagick: Generated 111 file(s)
          AutoPages: Disabled/Not configured in site.config.
         Pagination: Complete, processed 1 pagination page(s)
 [33m          Conflict: The following destination is shared by multiple files.[0m
