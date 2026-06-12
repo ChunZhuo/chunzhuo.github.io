@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "post-generalized-plackett-luce-model",
+        },{id: "post-bioai-daily-sprouts-2026-06-09",
+        
+          title: "bioAI Daily Sprouts | 2026-06-09",
+        
+        description: "Daily AI4Bio, bioinformatics, and computational biology paper digest.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/bioai-daily-sprouts-2026-06-09/";
+          
+        },
+      },{id: "post-generalized-plackett-luce-model",
         
           title: "Generalized Plackett-Luce Model",
         
