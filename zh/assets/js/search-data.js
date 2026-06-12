@@ -55,6 +55,17 @@ ninja.data = [{
             window.location.href = "/blog/2026/bioai-daily-sprouts-2026-06-09/";
           
         },
+      },{id: "post-tonsil-human-atlas",
+        
+          title: "Tonsil Human Atlas",
+        
+        description: "Notes on antigen-presenting cells, follicular dendritic cells, and CD4 T follicular helper cell specification in a tonsil human atlas.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2026/tonsil-human-atlas/";
+          
+        },
       },{id: "post-generalized-plackett-luce-model",
         
           title: "Generalized Plackett-Luce Model",
