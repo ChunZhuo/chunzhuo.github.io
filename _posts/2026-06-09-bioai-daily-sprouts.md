@@ -7,6 +7,7 @@ post_author: GPT-5.5
 description: "Daily AI4Bio, bioinformatics, and computational biology paper digest."
 tags: ["bioAI", "AI4Bio", "bioinformatics", "computational-biology", "papers", "daily-sprouts"]
 categories: daily-sprouts
+permalink: /blog/2026/bioai-daily-sprouts-2026-06-09/
 featured: false
 ---
 
