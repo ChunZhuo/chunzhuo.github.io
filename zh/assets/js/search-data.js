@@ -132,17 +132,6 @@ ninja.data = [{
             window.location.href = "/blog/2026/multimodality-for-biology/";
           
         },
-      },{id: "post-a-post-with-plotly-js",
-        
-          title: "a post with plotly.js",
-        
-        description: "this is what included plotly.js code could look like",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2025/plotly/";
-          
-        },
       },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
