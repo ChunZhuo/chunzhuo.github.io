@@ -3,10 +3,6 @@ Configuration file: /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_con
        Destination: /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/_site
  Incremental build: disabled. Enable with --incremental
       Generating... 
-Fetching external posts from medium.com:
-...fetching https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2
-Fetching external posts from Google Blog:
-...fetching https://blog.google/technology/ai/google-gemini-update-flash-ai-assistant-io-2024/
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/bibsearch.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/calendar-setup.js
 Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets/js/chartjs-setup.js
@@ -280,7 +276,7 @@ Terser: Minifying /home/runner/work/chunzhuo.github.io/chunzhuo.github.io/assets
        Imagemagick: Generated 117 file(s)
          AutoPages: Disabled/Not configured in site.config.
         Pagination: Complete, processed 1 pagination page(s)
-[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20261103-4310-fwkc7i.ipynb to html
+[NbConvertApp] Converting notebook /tmp/jekyll-jupyter-notebook20261103-3271-hds93k.ipynb to html
 /opt/hostedtoolcache/Python/3.13.17/x64/lib/python3.13/site-packages/nbconvert/filters/highlight.py:71: UserWarning: IPython3 lexer unavailable, falling back on Python 3
   return _pygments_highlight(
 [33m          Conflict: The following destination is shared by multiple files.[0m
